@@ -1,0 +1,165 @@
+{
+	"name": "CopyPipeline_xs3",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_xs3",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Rentals/Transactions.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "fourthcoffee-ingest//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "setOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "TransactionID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TransactionID']"
+								}
+							},
+							{
+								"source": {
+									"name": "CustomerID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CustomerID']"
+								}
+							},
+							{
+								"source": {
+									"name": "MovieID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieID']"
+								}
+							},
+							{
+								"source": {
+									"name": "RentalDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RentalDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "ReturnDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['ReturnDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "RentalCost",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RentalCost']"
+								}
+							},
+							{
+								"source": {
+									"name": "LateFee",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['LateFee']"
+								}
+							},
+							{
+								"source": {
+									"name": "RewindFlag",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RewindFlag']"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CreatedDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "UpdatedDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['UpdatedDate']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_xs3",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_xs3",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-04-25T21:01:48Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,129 @@
+{
+	"name": "CopyPipeline_bpg",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_bpg",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Rentals/Movies.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "fourthcoffee-ingest//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "setOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "MovieID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieID']"
+								}
+							},
+							{
+								"source": {
+									"name": "MovieTitle",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieTitle']"
+								}
+							},
+							{
+								"source": {
+									"name": "Category",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Category']"
+								}
+							},
+							{
+								"source": {
+									"name": "Rating",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Rating']"
+								}
+							},
+							{
+								"source": {
+									"name": "RunTimeMin",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RunTimeMin']"
+								}
+							},
+							{
+								"source": {
+									"name": "ReleaseDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['ReleaseDate']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_bpg",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_bpg",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-04-25T21:00:01Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

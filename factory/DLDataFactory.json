@@ -1,0 +1,9 @@
+{
+	"name": "DLDataFactory",
+	"location": "usgovvirginia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "625088ed-aeb8-4e1c-8f3f-14b4992905ec",
+		"tenantId": "bee4890a-277b-4803-8ae5-9a71aa452cc8"
+	}
+}

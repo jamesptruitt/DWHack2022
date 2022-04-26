@@ -1,0 +1,498 @@
+{
+	"name": "CopyPipeline_ne1",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach_ne1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy_ne1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "dbo.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "vanarsdell-ingest//@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "SqlServerSource",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings",
+										"filePattern": "setOfObjects"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false,
+								"translator": {
+									"value": "@item().copyActivity.translator",
+									"type": "Expression"
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SourceDataset_ne1",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_table": "@item().source.table"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DestinationDataset_ne1",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"cw_items": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"source": {
+							"table": "Actors"
+						},
+						"destination": {
+							"fileName": "dboActors.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ActorID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['ActorID']"
+										}
+									},
+									{
+										"source": {
+											"name": "ActorName",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['ActorName']"
+										}
+									},
+									{
+										"source": {
+											"name": "Gender",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['Gender']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "Customers"
+						},
+						"destination": {
+							"fileName": "dboCustomers.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "CustomerID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['CustomerID']"
+										}
+									},
+									{
+										"source": {
+											"name": "LastName",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['LastName']"
+										}
+									},
+									{
+										"source": {
+											"name": "FirstName",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['FirstName']"
+										}
+									},
+									{
+										"source": {
+											"name": "AddressLine1",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['AddressLine1']"
+										}
+									},
+									{
+										"source": {
+											"name": "AddressLine2",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['AddressLine2']"
+										}
+									},
+									{
+										"source": {
+											"name": "City",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['City']"
+										}
+									},
+									{
+										"source": {
+											"name": "State",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['State']"
+										}
+									},
+									{
+										"source": {
+											"name": "ZipCode",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['ZipCode']"
+										}
+									},
+									{
+										"source": {
+											"name": "PhoneNumber",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['PhoneNumber']"
+										}
+									},
+									{
+										"source": {
+											"name": "CreatedDate",
+											"type": "Date"
+										},
+										"sink": {
+											"path": "$['CreatedDate']"
+										}
+									},
+									{
+										"source": {
+											"name": "UpdatedDate",
+											"type": "Date"
+										},
+										"sink": {
+											"path": "$['UpdatedDate']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "MovieActors"
+						},
+						"destination": {
+							"fileName": "dboMovieActors.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "MovieActorID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieActorID']"
+										}
+									},
+									{
+										"source": {
+											"name": "MovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieID']"
+										}
+									},
+									{
+										"source": {
+											"name": "ActorID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['ActorID']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "Movies"
+						},
+						"destination": {
+							"fileName": "dboMovies.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "MovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieID']"
+										}
+									},
+									{
+										"source": {
+											"name": "MovieTitle",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['MovieTitle']"
+										}
+									},
+									{
+										"source": {
+											"name": "Category",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['Category']"
+										}
+									},
+									{
+										"source": {
+											"name": "Rating",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['Rating']"
+										}
+									},
+									{
+										"source": {
+											"name": "RunTimeMin",
+											"type": "Int16"
+										},
+										"sink": {
+											"path": "$['RunTimeMin']"
+										}
+									},
+									{
+										"source": {
+											"name": "ReleaseDate",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['ReleaseDate']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "OnlineMovieMappings"
+						},
+						"destination": {
+							"fileName": "dboOnlineMovieMappings.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "MovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieID']"
+										}
+									},
+									{
+										"source": {
+											"name": "OnlineMovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['OnlineMovieID']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "Transactions"
+						},
+						"destination": {
+							"fileName": "dboTransactions.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "TransactionID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['TransactionID']"
+										}
+									},
+									{
+										"source": {
+											"name": "CustomerID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['CustomerID']"
+										}
+									},
+									{
+										"source": {
+											"name": "MovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieID']"
+										}
+									},
+									{
+										"source": {
+											"name": "RentalDate",
+											"type": "Int32"
+										},
+										"sink": {
+											"path": "$['RentalDate']"
+										}
+									},
+									{
+										"source": {
+											"name": "ReturnDate",
+											"type": "Int32"
+										},
+										"sink": {
+											"path": "$['ReturnDate']"
+										}
+									},
+									{
+										"source": {
+											"name": "RentalCost",
+											"type": "Decimal"
+										},
+										"sink": {
+											"path": "$['RentalCost']"
+										}
+									},
+									{
+										"source": {
+											"name": "LateFee",
+											"type": "Decimal"
+										},
+										"sink": {
+											"path": "$['LateFee']"
+										}
+									},
+									{
+										"source": {
+											"name": "RewindFlag",
+											"type": "Boolean"
+										},
+										"sink": {
+											"path": "$['RewindFlag']"
+										}
+									},
+									{
+										"source": {
+											"name": "CreatedDate",
+											"type": "DateTime"
+										},
+										"sink": {
+											"path": "$['CreatedDate']"
+										}
+									},
+									{
+										"source": {
+											"name": "UpdatedDate",
+											"type": "DateTime"
+										},
+										"sink": {
+											"path": "$['UpdatedDate']"
+										}
+									}
+								]
+							}
+						}
+					}
+				]
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-04-25T20:46:32Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
