@@ -1,0 +1,56 @@
+{
+	"name": "JTFourthCoffeeCustomers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Customers.json",
+				"fileSystem": "fourthcoffee-ingest"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"CustomerID": {
+					"type": "string"
+				},
+				"LastName": {
+					"type": "string"
+				},
+				"FirstName": {
+					"type": "string"
+				},
+				"AddressLine1": {
+					"type": "string"
+				},
+				"AddressLine2": {
+					"type": "string"
+				},
+				"City": {
+					"type": "string"
+				},
+				"State": {
+					"type": "string"
+				},
+				"ZipCode": {
+					"type": "string"
+				},
+				"PhoneNumber": {
+					"type": "string"
+				},
+				"CreatedDate": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}
