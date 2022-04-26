@@ -16,14 +16,51 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@dataset().cw_fileName",
+					"value": "dboCustomers.txt",
 					"type": "Expression"
 				},
-				"fileSystem": "cloudsales-ingest"
+				"fileSystem": "vanarsdell-ingest"
 			},
 			"compressionCodec": "snappy"
 		},
-		"schema": {}
+		"schema": {
+			"type": "object",
+			"properties": {
+				"CustomerID": {
+					"type": "string"
+				},
+				"LastName": {
+					"type": "string"
+				},
+				"FirstName": {
+					"type": "string"
+				},
+				"AddressLine1": {
+					"type": "string"
+				},
+				"AddressLine2": {
+					"type": "null"
+				},
+				"City": {
+					"type": "string"
+				},
+				"State": {
+					"type": "string"
+				},
+				"ZipCode": {
+					"type": "string"
+				},
+				"PhoneNumber": {
+					"type": "string"
+				},
+				"CreatedDate": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "string"
+				}
+			}
+		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
 }
