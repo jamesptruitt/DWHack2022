@@ -1,0 +1,42 @@
+{
+	"name": "cloudsales_customers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dboCustomers.txt",
+				"fileSystem": "cloudsales-ingest"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"CustomerID": {
+					"type": "string"
+				},
+				"LastName": {
+					"type": "string"
+				},
+				"FirstName": {
+					"type": "string"
+				},
+				"PhoneNumber": {
+					"type": "string"
+				},
+				"CreatedDate": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

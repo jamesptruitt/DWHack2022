@@ -1,0 +1,51 @@
+{
+	"name": "cloudsales_address",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dboAddresses.txt",
+				"fileSystem": "cloudsales-ingest"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"AddressID": {
+					"type": "string"
+				},
+				"CustomerID": {
+					"type": "string"
+				},
+				"AddressLine1": {
+					"type": "string"
+				},
+				"AddressLine2": {
+					"type": "null"
+				},
+				"City": {
+					"type": "string"
+				},
+				"State": {
+					"type": "string"
+				},
+				"ZipCode": {
+					"type": "string"
+				},
+				"CreatedDate": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

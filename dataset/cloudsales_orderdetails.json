@@ -1,0 +1,48 @@
+{
+	"name": "cloudsales_orderdetails",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dboOrderDetails.txt",
+				"fileSystem": "cloudsales-ingest"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"OrderDetailID": {
+					"type": "string"
+				},
+				"OrderID": {
+					"type": "string"
+				},
+				"MovieID": {
+					"type": "string"
+				},
+				"Quantity": {
+					"type": "integer"
+				},
+				"UnitCost": {
+					"type": "number"
+				},
+				"LineNumber": {
+					"type": "integer"
+				},
+				"CreatedDate": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,110 @@
+{
+	"name": "Orders",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "cloudsales_orders",
+						"type": "DatasetReference"
+					},
+					"name": "cloudsalesOrders"
+				},
+				{
+					"dataset": {
+						"referenceName": "cloudsales_orderdetails",
+						"type": "DatasetReference"
+					},
+					"name": "cloudsalesOrderDetails"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "orders",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "sourceID"
+				},
+				{
+					"name": "derivedColumns"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          OrderID as string,",
+				"          CustomerID as string,",
+				"          OrderDate as string,",
+				"          ShipDate as string,",
+				"          TotalCost as double,",
+				"          CreatedDate as string,",
+				"          UpdatedDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     inferDriftedColumnTypes: true,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> cloudsalesOrders",
+				"source(output(",
+				"          OrderDetailID as string,",
+				"          OrderID as string,",
+				"          MovieID as string,",
+				"          Quantity as integer,",
+				"          UnitCost as double,",
+				"          LineNumber as integer,",
+				"          CreatedDate as string,",
+				"          UpdatedDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> cloudsalesOrderDetails",
+				"cloudsalesOrders, cloudsalesOrderDetails join(cloudsalesOrders@OrderID == cloudsalesOrderDetails@OrderID,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> join1",
+				"join1 select(mapColumn(",
+				"          OrderID = cloudsalesOrders@OrderID,",
+				"          CustomerID,",
+				"          OrderDate,",
+				"          ShipDate,",
+				"          TotalCost,",
+				"          OrderDetailID,",
+				"          MovieID,",
+				"          Quantity,",
+				"          UnitCost,",
+				"          LineNumber",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 derive(SourceID = 1) ~> sourceID",
+				"sourceID derive(UniqueOrderID = concat(toString(SourceID), \"-\", OrderDetailID),",
+				"          UniqueMovieID = concat(toString(SourceID), \"-\", MovieID),",
+				"          UniqueCustomerID = concat(toString(SourceID), \"-\", CustomerID),",
+				"          OrderDate = toDate(OrderDate, \"yyyy-MM-dd\"),",
+				"          ShipDate = toDate(ShipDate, \"yyyy-MM-dd\"),",
+				"          TotalCost = toFloat(TotalCost),",
+				"          Quantity = toInteger(Quantity),",
+				"          LineNumber = toInteger(LineNumber)) ~> derivedColumns",
+				"derivedColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
+			]
+		}
+	}
+}
