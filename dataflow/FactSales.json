@@ -53,7 +53,7 @@
 				"     preferredFractionalType: 'decimal',",
 				"     booleanFormat: ['true', 'false']) ~> orders",
 				"orders derive(OrderDateSK = dayOfYear(OrderDate),",
-				"          ShipDateSK = dayOfYear(ShipDate),",
+				"          ShipDateSK = 1,",
 				"          CustomerSK = 1,",
 				"          MovieSK = 1) ~> derivedColumn",
 				"derivedColumn sink(allowSchemaDrift: false,",
