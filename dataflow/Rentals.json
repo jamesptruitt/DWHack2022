@@ -1,0 +1,114 @@
+{
+	"name": "Rentals",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "fourthcoffee_rentals",
+						"type": "DatasetReference"
+					},
+					"name": "fc"
+				},
+				{
+					"dataset": {
+						"referenceName": "vanarsdell_rentals",
+						"type": "DatasetReference"
+					},
+					"name": "va"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "union1"
+				},
+				{
+					"name": "selectfc"
+				},
+				{
+					"name": "selectva"
+				},
+				{
+					"name": "derivedColumnfc"
+				},
+				{
+					"name": "derivedColumnva"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          TransactionID as string,",
+				"          CustomerID as string,",
+				"          MovieID as string,",
+				"          RentalDate as string,",
+				"          ReturnDate as string,",
+				"          RentalCost as string,",
+				"          LateFee as string,",
+				"          RewindFlag as string,",
+				"          CreatedDate as string,",
+				"          UpdatedDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> fc",
+				"source(output(",
+				"          TransactionID as string,",
+				"          CustomerID as string,",
+				"          MovieID as string,",
+				"          RentalDate as integer,",
+				"          ReturnDate as integer,",
+				"          RentalCost as double,",
+				"          LateFee as double,",
+				"          RewindFlag as boolean,",
+				"          CreatedDate as string,",
+				"          UpdatedDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> va",
+				"derivedColumnfc, derivedColumnva union(byName: true)~> union1",
+				"fc select(mapColumn(",
+				"          TransactionID,",
+				"          CustomerID,",
+				"          MovieID,",
+				"          RentalDate,",
+				"          ReturnDate,",
+				"          RentalCost,",
+				"          LateFee,",
+				"          RewindFlag,",
+				"          CreatedDate,",
+				"          UpdatedDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectfc",
+				"va select(mapColumn(",
+				"          TransactionID,",
+				"          CustomerID,",
+				"          MovieID,",
+				"          RentalDate,",
+				"          ReturnDate,",
+				"          RentalCost,",
+				"          LateFee,",
+				"          RewindFlag,",
+				"          CreatedDate,",
+				"          UpdatedDate",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectva",
+				"selectfc derive(SourceID = 1,",
+				"          RentalDate = toDate(RentalDate, \"yyyy-MM-dd\"),",
+				"          ReturnDate = toDate(ReturnDate, \"yyyy-MM-dd\"),",
+				"          RentalCost = toDecimal(LateFee),",
+				"          LateFee = toDecimal(LateFee),",
+				"          RewindFlag = toBoolean(RewindFlag),",
+				"          CreatedDate = toDate(CreatedDate, \"yyyy-MM-dd\"),",
+				"          UpdatedDate = toDate(UpdatedDate, \"yyyy-MM-dd\")) ~> derivedColumnfc",
+				"selectva derive(SourceID = 2) ~> derivedColumnva"
+			]
+		}
+	}
+}
