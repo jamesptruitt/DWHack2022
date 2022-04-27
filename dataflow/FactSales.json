@@ -89,7 +89,7 @@
 				"          OrderDateSK,",
 				"          ShipDateSK,",
 				"          CustomerSK,",
-				"          LocationSK,",
+				"          LocationSK = SourceID,",
 				"          MovieSK,",
 				"          Quantity,",
 				"          UnitCost,",
