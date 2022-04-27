@@ -33,9 +33,6 @@
 					"name": "join"
 				},
 				{
-					"name": "select"
-				},
-				{
 					"name": "derivedColumn"
 				}
 			],
@@ -74,7 +71,22 @@
 				"Customers, Addresses join(Customers@CustomerID == Addresses@CustomerID,",
 				"     joinType:'inner',",
 				"     broadcast: 'auto')~> join",
-				"join select(mapColumn(",
+				"join derive(ActiveFlag = 1) ~> derivedColumn",
+				"derivedColumn sink(allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'dbo',",
+				"     tableName: 'DimCustomers',",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     mapColumn(",
+				"          RecordStartDate = Customers@CreatedDate,",
 				"          CustomerID = Customers@CustomerID,",
 				"          FirstName,",
 				"          LastName,",
@@ -82,26 +94,10 @@
 				"          AddressLine1,",
 				"          AddressLine2,",
 				"          City,",
-				"          RecordStartDate = Addresses@CreatedDate,",
 				"          State,",
-				"          ZipCode",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select",
-				"select derive(ActiveFlag = 1) ~> derivedColumn",
-				"derivedColumn sink(allowSchemaDrift: false,",
-				"     validateSchema: false,",
-				"     format: 'table',",
-				"     store: 'sqlserver',",
-				"     schemaName: '',",
-				"     tableName: '',",
-				"     insertable: true,",
-				"     updateable: false,",
-				"     deletable: false,",
-				"     upsertable: false,",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     saveOrder: 1) ~> stardb"
+				"          ZipCode,",
+				"          ActiveFlag",
+				"     )) ~> stardb"
 			]
 		}
 	}
