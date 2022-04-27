@@ -1,0 +1,124 @@
+{
+	"name": "Movies",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SouthridgeMovies",
+						"type": "DatasetReference"
+					},
+					"name": "Southridge"
+				},
+				{
+					"dataset": {
+						"referenceName": "VanArsdellMovies",
+						"type": "DatasetReference"
+					},
+					"name": "VanArsdell"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Movies",
+						"type": "DatasetReference"
+					},
+					"name": "sink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumnSR"
+				},
+				{
+					"name": "derivedColumnVA"
+				},
+				{
+					"name": "selectSR"
+				},
+				{
+					"name": "selectVA"
+				},
+				{
+					"name": "union1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          actors as (name as string)[],",
+				"          availabilityDate as string,",
+				"          genre as string,",
+				"          rating as string,",
+				"          releaseYear as integer,",
+				"          runtime as integer,",
+				"          streamingAvailabilityDate as string,",
+				"          tier as integer,",
+				"          title as string,",
+				"          id as string,",
+				"          {_rid} as string,",
+				"          {_self} as string,",
+				"          {_etag} as string,",
+				"          {_attachments} as string,",
+				"          {_ts} as integer",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: true,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> Southridge",
+				"source(output(",
+				"          MovieID as string,",
+				"          MovieTitle as string,",
+				"          Category as string,",
+				"          Rating as string,",
+				"          RunTimeMin as integer,",
+				"          ReleaseDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> VanArsdell",
+				"Southridge derive(SourceID = 1,",
+				"          availabilityDate = toDate(availabilityDate, \"yyyy-MM-dd\"),",
+				"          releaseYear = toInteger(releaseYear),",
+				"          tier = toInteger(tier)) ~> derivedColumnSR",
+				"VanArsdell derive(SourceID = 2,",
+				"          ReleaseDate = toDate(ReleaseDate, \"yyyy-MM-dd\"),",
+				"          ReleaseYear = year(toDate(ReleaseDate))) ~> derivedColumnVA",
+				"derivedColumnSR select(mapColumn(",
+				"          Actor = actors[1].name,",
+				"          SourceID,",
+				"          AvailabilityDate = availabilityDate,",
+				"          Genre = genre,",
+				"          Rating = rating,",
+				"          AvailabilityYear = releaseYear,",
+				"          MovieTier = tier,",
+				"          MovieTitle = title,",
+				"          MovieID = id",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectSR",
+				"derivedColumnVA select(mapColumn(",
+				"          MovieID,",
+				"          MovieTitle,",
+				"          MovieGenre = Category,",
+				"          MovieRating = Rating,",
+				"          AvailabilityDate = ReleaseDate,",
+				"          SourceID,",
+				"          AvailabilityYear = ReleaseYear",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectVA",
+				"selectSR, selectVA union(byName: true)~> union1",
+				"union1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink"
+			]
+		}
+	}
+}

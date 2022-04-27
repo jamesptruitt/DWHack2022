@@ -1,0 +1,76 @@
+{
+	"name": "SouthridgeMovies",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "data_f5458040-9168-44d2-b6b0-8a36a90df2c0_9f493488-ab58-4591-b2cf-f727eeb1e277.json",
+				"fileSystem": "movies-ingest"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"actors": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"properties": {
+							"name": {
+								"type": "string"
+							}
+						}
+					}
+				},
+				"availabilityDate": {
+					"type": "string"
+				},
+				"genre": {
+					"type": "string"
+				},
+				"rating": {
+					"type": "string"
+				},
+				"releaseYear": {
+					"type": "integer"
+				},
+				"runtime": {
+					"type": "integer"
+				},
+				"streamingAvailabilityDate": {
+					"type": "string"
+				},
+				"tier": {
+					"type": "integer"
+				},
+				"title": {
+					"type": "string"
+				},
+				"id": {
+					"type": "string"
+				},
+				"_rid": {
+					"type": "string"
+				},
+				"_self": {
+					"type": "string"
+				},
+				"_etag": {
+					"type": "string"
+				},
+				"_attachments": {
+					"type": "string"
+				},
+				"_ts": {
+					"type": "integer"
+				}
+			}
+		}
+	}
+}
