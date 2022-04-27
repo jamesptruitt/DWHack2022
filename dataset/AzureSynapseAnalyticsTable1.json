@@ -1,0 +1,78 @@
+{
+	"name": "AzureSynapseAnalyticsTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalytics1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "SalesSK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "OrderID",
+				"type": "uniqueidentifier"
+			},
+			{
+				"name": "LineNumber",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "OrderDateSK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ShipDateSK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CustomerSK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "LocationSK",
+				"type": "smallint",
+				"precision": 5
+			},
+			{
+				"name": "MovieSK",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "DaysToShip",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "Quantity",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "UnitCost",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			},
+			{
+				"name": "ExtendedCost",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "FactSales"
+		}
+	}
+}
