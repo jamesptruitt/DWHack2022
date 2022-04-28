@@ -19,7 +19,15 @@
 					"name": "va"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "rentals",
+						"type": "DatasetReference"
+					},
+					"name": "sink"
+				}
+			],
 			"transformations": [
 				{
 					"name": "union1"
@@ -107,7 +115,31 @@
 				"          RewindFlag = toBoolean(RewindFlag),",
 				"          CreatedDate = toDate(CreatedDate, \"yyyy-MM-dd\"),",
 				"          UpdatedDate = toDate(UpdatedDate, \"yyyy-MM-dd\")) ~> derivedColumnfc",
-				"selectva derive(SourceID = 2) ~> derivedColumnva"
+				"selectva derive(SourceID = 2,",
+				"          RentalDate = toDate(RentalDate, \"yyyy-MM-dd\"),",
+				"          ReturnDate = toDate(ReturnDate, \"yyyy-MM-dd\"),",
+				"          RentalCost = toDecimal(RentalCost),",
+				"          LateFee = toDecimal(LateFee),",
+				"          CreatedDate = toDate(CreatedDate, \"yyyy-MM-dd\"),",
+				"          UpdatedDate = toDate(UpdatedDate, \"yyyy-MM-dd\")) ~> derivedColumnva",
+				"union1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          TransactionID as string,",
+				"          CustomerID as string,",
+				"          MovieID as string,",
+				"          RentalCost as double,",
+				"          LateFee as double,",
+				"          RewindFlag as boolean,",
+				"          CreatedDate as string,",
+				"          UpdatedDate as string,",
+				"          SourceID as integer",
+				"     ),",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink"
 			]
 		}
 	}
