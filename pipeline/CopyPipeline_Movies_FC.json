@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_bpg",
+				"name": "Copy_Movies_FC",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
