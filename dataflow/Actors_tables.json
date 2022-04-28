@@ -37,6 +37,12 @@
 				},
 				{
 					"name": "filter"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "aggregate2"
 				}
 			],
 			"scriptLines": [
@@ -64,7 +70,14 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectMovieActors",
 				"selectMovieActors filter(!isNull(MovieID)) ~> filter",
-				"selectActors sink(allowSchemaDrift: true,",
+				"selectActors aggregate(groupBy(ActorID,",
+				"          ActorName,",
+				"          Gender),",
+				"     count = count()) ~> aggregate1",
+				"filter aggregate(groupBy(ActorID,",
+				"          MovieID),",
+				"     count = count()) ~> aggregate2",
+				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          ActorSK as integer,",
@@ -87,7 +100,7 @@
 				"          ActorName,",
 				"          ActorGender = Gender",
 				"     )) ~> sinkActors",
-				"filter sink(allowSchemaDrift: true,",
+				"aggregate2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          MovieID as string,",
