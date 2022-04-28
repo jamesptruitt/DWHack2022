@@ -1,5 +1,5 @@
 {
-	"name": "SourceDataset_xs3",
+	"name": "FourthCoffeeTransactions2018",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "FourthCoffeeFileServer",
@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "FileServerLocation",
-				"fileName": "Transactions.csv",
-				"folderPath": "Rentals"
+				"folderPath": "Transactions_2018"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
@@ -60,6 +59,5 @@
 				"type": "String"
 			}
 		]
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

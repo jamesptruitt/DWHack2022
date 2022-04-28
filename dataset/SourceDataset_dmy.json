@@ -2,7 +2,7 @@
 	"name": "SourceDataset_dmy",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "FileServer1",
+			"referenceName": "FourthCoffeeFileServer",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],

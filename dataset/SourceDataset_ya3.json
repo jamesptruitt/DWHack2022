@@ -2,7 +2,7 @@
 	"name": "SourceDataset_ya3",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "FileServer1",
+			"referenceName": "FourthCoffeeFileServer",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
