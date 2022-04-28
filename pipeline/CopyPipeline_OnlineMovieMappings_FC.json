@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_pdv",
+				"name": "Copy_MovieMappings",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {

@@ -1,0 +1,713 @@
+{
+	"name": "Copy_FourthCoffee",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_Actors_FC",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Rentals/Actors.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "fourthcoffee-ingest//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "setOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "ActorID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['ActorID']"
+								}
+							},
+							{
+								"source": {
+									"name": "ActorName",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['ActorName']"
+								}
+							},
+							{
+								"source": {
+									"name": "Gender",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Gender']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_cxr",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_cxr",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy_Customers_FC",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Rentals/Customers.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "fourthcoffee-ingest//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "setOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "CustomerID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CustomerID']"
+								}
+							},
+							{
+								"source": {
+									"name": "LastName",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['LastName']"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstName",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['FirstName']"
+								}
+							},
+							{
+								"source": {
+									"name": "AddressLine1",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['AddressLine1']"
+								}
+							},
+							{
+								"source": {
+									"name": "AddressLine2",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['AddressLine2']"
+								}
+							},
+							{
+								"source": {
+									"name": "City",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['City']"
+								}
+							},
+							{
+								"source": {
+									"name": "State",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['State']"
+								}
+							},
+							{
+								"source": {
+									"name": "ZipCode",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['ZipCode']"
+								}
+							},
+							{
+								"source": {
+									"name": "PhoneNumber",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['PhoneNumber']"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CreatedDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "UpdatedDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['UpdatedDate']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_ya3",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_ya3",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy_MovieActors_FC",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Rentals/MovieActors.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "fourthcoffee-ingest//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "setOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "MovieActorID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieActorID']"
+								}
+							},
+							{
+								"source": {
+									"name": "MovieID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieID']"
+								}
+							},
+							{
+								"source": {
+									"name": "ActorID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['ActorID']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_dmy",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_dmy",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy_Movies_FC",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Rentals/Movies.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "fourthcoffee-ingest//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "setOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "MovieID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieID']"
+								}
+							},
+							{
+								"source": {
+									"name": "MovieTitle",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieTitle']"
+								}
+							},
+							{
+								"source": {
+									"name": "Category",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Category']"
+								}
+							},
+							{
+								"source": {
+									"name": "Rating",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['Rating']"
+								}
+							},
+							{
+								"source": {
+									"name": "RunTimeMin",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RunTimeMin']"
+								}
+							},
+							{
+								"source": {
+									"name": "ReleaseDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['ReleaseDate']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_bpg",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_bpg",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy_Transactions_FC",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Rentals/Transactions.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "fourthcoffee-ingest//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "setOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "TransactionID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['TransactionID']"
+								}
+							},
+							{
+								"source": {
+									"name": "CustomerID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CustomerID']"
+								}
+							},
+							{
+								"source": {
+									"name": "MovieID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieID']"
+								}
+							},
+							{
+								"source": {
+									"name": "RentalDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RentalDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "ReturnDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['ReturnDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "RentalCost",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RentalCost']"
+								}
+							},
+							{
+								"source": {
+									"name": "LateFee",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['LateFee']"
+								}
+							},
+							{
+								"source": {
+									"name": "RewindFlag",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['RewindFlag']"
+								}
+							},
+							{
+								"source": {
+									"name": "CreatedDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['CreatedDate']"
+								}
+							},
+							{
+								"source": {
+									"name": "UpdatedDate",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['UpdatedDate']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_xs3",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_xs3",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Copy_MovieMappings",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [
+					{
+						"name": "Source",
+						"value": "Rentals/OnlineMovieMappings.csv"
+					},
+					{
+						"name": "Destination",
+						"value": "fourthcoffee-ingest//"
+					}
+				],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "FileServerReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings",
+							"skipLineCount": 0
+						}
+					},
+					"sink": {
+						"type": "JsonSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "JsonWriteSettings",
+							"filePattern": "setOfObjects"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "MovieID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieID']"
+								}
+							},
+							{
+								"source": {
+									"name": "OnlineMovieID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['OnlineMovieID']"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "SourceDataset_pdv",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DestinationDataset_pdv",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
