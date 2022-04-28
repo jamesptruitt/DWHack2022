@@ -43,13 +43,7 @@
 					"name": "flattenActors"
 				},
 				{
-					"name": "selectNames"
-				},
-				{
 					"name": "AddUuid"
-				},
-				{
-					"name": "select"
 				},
 				{
 					"name": "union1"
@@ -59,9 +53,6 @@
 				},
 				{
 					"name": "select1"
-				},
-				{
-					"name": "aggregateNames"
 				},
 				{
 					"name": "aggregate2"
@@ -76,10 +67,22 @@
 					"name": "split2"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "AddGender"
 				},
 				{
 					"name": "union3"
+				},
+				{
+					"name": "aggregate3"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "filter1"
 				}
 			],
 			"scriptLines": [
@@ -132,19 +135,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flattenActors",
-				"aggregateNames select(mapColumn(",
-				"          name",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> selectNames",
-				"split1@NullActorID derive(ActorID = uuid()) ~> AddUuid",
-				"flattenActors select(mapColumn(",
-				"          ActorName = name,",
-				"          MovieID = MovieId",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select",
-				"select1, select union(byName: true)~> union1",
+				"filter1 derive(ActorID = uuid()) ~> AddUuid",
+				"select1, flattenActors union(byName: true)~> union1",
 				"joinVA aggregate(groupBy(sourceVanArsdell@ActorID,",
 				"          Gender,",
 				"          MovieID,",
@@ -158,20 +150,36 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select1",
-				"flattenActors aggregate(groupBy(name),",
-				"     count = count()) ~> aggregateNames",
 				"union1 aggregate(groupBy(ActorID,",
 				"          Gender,",
-				"          MovieID,",
+				"          union1@MovieID,",
 				"          ActorName),",
 				"     count = count()) ~> aggregate2",
-				"aggregate2 split(isNull(ActorID),",
-				"     disjoint: false) ~> split1@(NullActorID, NotNullActorID)",
+				"select3 split(!isNull(ActorID),",
+				"     disjoint: false) ~> split1@(NotNullActorID, NullActorID)",
 				"AddUuid, split1@NotNullActorID union(byName: true)~> union2",
-				"union2 split(isNull(Gender),",
-				"     disjoint: false) ~> split2@(NullGender, NotNullGender)",
-				"split2@NullGender derive(Gender = \"U\") ~> derivedColumn1",
-				"derivedColumn1, split2@NotNullGender union(byName: true)~> union3",
+				"union2 split(!isNull(Gender),",
+				"     disjoint: false) ~> split2@(NotNullGender, NullGender)",
+				"split2@NullGender derive(Gender = \"U\") ~> AddGender",
+				"AddGender, split2@NotNullGender union(byName: true)~> union3",
+				"flattenActors aggregate(groupBy(name,",
+				"          MovieId),",
+				"     count = count()) ~> aggregate3",
+				"aggregate3 select(mapColumn(",
+				"          ActorName = name,",
+				"          MovieID = MovieId",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"aggregate2 select(mapColumn(",
+				"          ActorID,",
+				"          Gender,",
+				"          MovieID,",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"split1@NullActorID filter(!isNull(ActorName)) ~> filter1",
 				"union3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
