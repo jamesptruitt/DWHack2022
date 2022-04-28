@@ -61,7 +61,13 @@
 					"name": "derivedColumn"
 				},
 				{
-					"name": "selectVA"
+					"name": "aggregate1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "aggregateNames"
 				}
 			],
 			"scriptLines": [
@@ -114,7 +120,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flattenActors",
-				"flattenActors select(mapColumn(",
+				"aggregateNames select(mapColumn(",
 				"          name",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
@@ -130,16 +136,23 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select",
-				"selectVA, derivedColumn union(byName: true)~> union1",
+				"select1, derivedColumn union(byName: true)~> union1",
 				"select derive(Gender = \"U\") ~> derivedColumn",
-				"joinVA select(mapColumn(",
-				"          ActorID = sourceVanArsdell@ActorID,",
-				"          ActorName,",
+				"joinVA aggregate(groupBy(sourceVanArsdell@ActorID,",
 				"          Gender,",
-				"          MovieID",
+				"          MovieID,",
+				"          ActorName),",
+				"     MovieCount = count()) ~> aggregate1",
+				"aggregate1 select(mapColumn(",
+				"          ActorID,",
+				"          Gender,",
+				"          MovieID,",
+				"          ActorName",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> selectVA",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"flattenActors aggregate(groupBy(name),",
+				"     count = count()) ~> aggregateNames",
 				"union1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
