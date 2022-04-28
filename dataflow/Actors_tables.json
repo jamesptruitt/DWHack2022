@@ -34,6 +34,9 @@
 				},
 				{
 					"name": "selectMovieActors"
+				},
+				{
+					"name": "filter"
 				}
 			],
 			"scriptLines": [
@@ -60,6 +63,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: true) ~> selectMovieActors",
+				"selectMovieActors filter(!isNull(MovieID)) ~> filter",
 				"selectActors sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -83,7 +87,7 @@
 				"          ActorName,",
 				"          ActorGender = Gender",
 				"     )) ~> sinkActors",
-				"selectMovieActors sink(allowSchemaDrift: true,",
+				"filter sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          MovieID as string,",
