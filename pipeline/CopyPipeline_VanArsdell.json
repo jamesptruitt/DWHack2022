@@ -1,5 +1,5 @@
 {
-	"name": "CopyPipeline_ne1",
+	"name": "CopyPipeline_VanArsdell",
 	"properties": {
 		"activities": [
 			{
@@ -14,7 +14,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy_ne1",
+							"name": "Copy_VanArsdell",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
