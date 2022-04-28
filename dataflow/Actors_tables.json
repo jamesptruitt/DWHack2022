@@ -1,0 +1,100 @@
+{
+	"name": "Actors_tables",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Actors",
+						"type": "DatasetReference"
+					},
+					"name": "sourceActors"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticsTableActors",
+						"type": "DatasetReference"
+					},
+					"name": "sinkActors"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticsTableDimActors",
+						"type": "DatasetReference"
+					},
+					"name": "sinkMovieActors"
+				}
+			],
+			"transformations": [
+				{
+					"name": "selectActors"
+				},
+				{
+					"name": "selectMovieActors"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ActorID as string,",
+				"          ActorName as string,",
+				"          Gender as string,",
+				"          MovieID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceActors",
+				"sourceActors select(mapColumn(",
+				"          ActorID,",
+				"          ActorName,",
+				"          Gender",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: true) ~> selectActors",
+				"sourceActors select(mapColumn(",
+				"          ActorID,",
+				"          MovieID",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: true) ~> selectMovieActors",
+				"selectActors sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          ActorSK as integer,",
+				"          ActorID as string,",
+				"          ActorName as string,",
+				"          ActorGender as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sinkActors",
+				"selectMovieActors sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          MovieID as string,",
+				"          ActorID as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sinkMovieActors"
+			]
+		}
+	}
+}
