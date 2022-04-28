@@ -9,7 +9,7 @@
 						"referenceName": "cloudstreaming_transactions",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "cloudStreamingTransactions"
 				}
 			],
 			"sinks": [
@@ -18,7 +18,7 @@
 						"referenceName": "streaming",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "streamingSink"
 				}
 			],
 			"transformations": [
@@ -26,7 +26,7 @@
 					"name": "addSourceID"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "addUniqueColumns"
 				}
 			],
 			"scriptLines": [
@@ -42,14 +42,14 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine') ~> source1",
-				"source1 derive(SourceID = 1) ~> addSourceID",
+				"     documentForm: 'documentPerLine') ~> cloudStreamingTransactions",
+				"cloudStreamingTransactions derive(SourceID = 1) ~> addSourceID",
 				"addSourceID derive(UniqueOrderID = concat(toString(SourceID),TransactionID),",
 				"          UniqueMovieID = concat(toString(SourceID),MovieID),",
 				"          UniqueCustomerID = concat(toString(SourceID),CustomerID),",
-				"          StreamStart = toTimestamp(StreamStart),",
-				"          StreamEnd = toTimestamp(StreamEnd)) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"          StreamStart = toTimestamp(StreamStart, 'yyyy-MM-dd\\'T\\'HH:mm:ss'),",
+				"          StreamEnd = toTimestamp(StreamEnd, 'yyyy-MM-dd\\'T\\'HH:mm:ss')) ~> addUniqueColumns",
+				"addUniqueColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
 				"     preCommands: [],",
@@ -66,7 +66,7 @@
 				"          UniqueOrderID,",
 				"          UniqueMovieID,",
 				"          UniqueCustomerID",
-				"     )) ~> sink1"
+				"     )) ~> streamingSink"
 			]
 		}
 	}
