@@ -5,26 +5,7 @@
 			{
 				"name": "DVD Sales",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Execute Copy CloudSales",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Execute CloudStreaming",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Execute FourthCoffee",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "1.00:00:00",
 					"retry": 0,
@@ -48,26 +29,7 @@
 			{
 				"name": "Customer",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Execute Copy CloudSales",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Execute CloudStreaming",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Execute FourthCoffee",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "1.00:00:00",
 					"retry": 0,
@@ -91,26 +53,7 @@
 			{
 				"name": "Movies",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Execute Copy CloudSales",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Execute CloudStreaming",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Execute FourthCoffee",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "1.00:00:00",
 					"retry": 0,
@@ -134,26 +77,7 @@
 			{
 				"name": "Rentals",
 				"type": "ExecuteDataFlow",
-				"dependsOn": [
-					{
-						"activity": "Execute Copy CloudSales",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Execute CloudStreaming",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "Execute FourthCoffee",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "1.00:00:00",
 					"retry": 0,
@@ -172,51 +96,6 @@
 						"computeType": "General"
 					},
 					"traceLevel": "Fine"
-				}
-			},
-			{
-				"name": "Execute Copy CloudSales",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "CopyPipeline_CloudSales",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"cw_items": "[{\"source\":{\"table\":\"Addresses\"},\"destination\":{\"fileName\":\"dboAddresses.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"AddressID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['AddressID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"AddressLine1\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine1']\"}},{\"source\":{\"name\":\"AddressLine2\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine2']\"}},{\"source\":{\"name\":\"City\",\"type\":\"String\"},\"sink\":{\"path\":\"$['City']\"}},{\"source\":{\"name\":\"State\",\"type\":\"String\"},\"sink\":{\"path\":\"$['State']\"}},{\"source\":{\"name\":\"ZipCode\",\"type\":\"String\"},\"sink\":{\"path\":\"$['ZipCode']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Customers\"},\"destination\":{\"fileName\":\"dboCustomers.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"LastName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['LastName']\"}},{\"source\":{\"name\":\"FirstName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['FirstName']\"}},{\"source\":{\"name\":\"PhoneNumber\",\"type\":\"String\"},\"sink\":{\"path\":\"$['PhoneNumber']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"OrderDetails\"},\"destination\":{\"fileName\":\"dboOrderDetails.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"OrderDetailID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['OrderDetailID']\"}},{\"source\":{\"name\":\"OrderID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['OrderID']\"}},{\"source\":{\"name\":\"MovieID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['MovieID']\"}},{\"source\":{\"name\":\"Quantity\",\"type\":\"Byte\"},\"sink\":{\"path\":\"$['Quantity']\"}},{\"source\":{\"name\":\"UnitCost\",\"type\":\"Decimal\"},\"sink\":{\"path\":\"$['UnitCost']\"}},{\"source\":{\"name\":\"LineNumber\",\"type\":\"Byte\"},\"sink\":{\"path\":\"$['LineNumber']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Orders\"},\"destination\":{\"fileName\":\"dboOrders.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"OrderID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['OrderID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"OrderDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['OrderDate']\"}},{\"source\":{\"name\":\"ShipDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['ShipDate']\"}},{\"source\":{\"name\":\"TotalCost\",\"type\":\"Decimal\"},\"sink\":{\"path\":\"$['TotalCost']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}}]"
-					}
-				}
-			},
-			{
-				"name": "Execute CloudStreaming",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "CopyPipeline_cloudstreaming",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"cw_items": "[{\"source\":{\"table\":\"Addresses\"},\"destination\":{\"fileName\":\"dboAddresses.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"AddressID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['AddressID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"AddressLine1\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine1']\"}},{\"source\":{\"name\":\"AddressLine2\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine2']\"}},{\"source\":{\"name\":\"City\",\"type\":\"String\"},\"sink\":{\"path\":\"$['City']\"}},{\"source\":{\"name\":\"State\",\"type\":\"String\"},\"sink\":{\"path\":\"$['State']\"}},{\"source\":{\"name\":\"ZipCode\",\"type\":\"String\"},\"sink\":{\"path\":\"$['ZipCode']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Customers\"},\"destination\":{\"fileName\":\"dboCustomers.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"LastName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['LastName']\"}},{\"source\":{\"name\":\"FirstName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['FirstName']\"}},{\"source\":{\"name\":\"PhoneNumber\",\"type\":\"String\"},\"sink\":{\"path\":\"$['PhoneNumber']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Transactions\"},\"destination\":{\"fileName\":\"dboTransactions.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"TransactionID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['TransactionID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"MovieID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['MovieID']\"}},{\"source\":{\"name\":\"StreamStart\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamStart']\"}},{\"source\":{\"name\":\"StreamEnd\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamEnd']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}}]"
-					}
-				}
-			},
-			{
-				"name": "Execute FourthCoffee",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "Copy_FourthCoffee",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
 				}
 			}
 		],
