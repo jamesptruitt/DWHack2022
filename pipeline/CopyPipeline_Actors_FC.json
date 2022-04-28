@@ -1,9 +1,9 @@
 {
-	"name": "CopyPipeline_xs3",
+	"name": "CopyPipeline_Actors_FC",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_xs3",
+				"name": "Copy_Actors_FC",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "Rentals/Transactions.csv"
+						"value": "Rentals/Actors.csv"
 					},
 					{
 						"name": "Destination",
@@ -53,92 +53,29 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "TransactionID",
+									"name": "ActorID",
 									"type": "String"
 								},
 								"sink": {
-									"path": "$['TransactionID']"
+									"path": "$['ActorID']"
 								}
 							},
 							{
 								"source": {
-									"name": "CustomerID",
+									"name": "ActorName",
 									"type": "String"
 								},
 								"sink": {
-									"path": "$['CustomerID']"
+									"path": "$['ActorName']"
 								}
 							},
 							{
 								"source": {
-									"name": "MovieID",
+									"name": "Gender",
 									"type": "String"
 								},
 								"sink": {
-									"path": "$['MovieID']"
-								}
-							},
-							{
-								"source": {
-									"name": "RentalDate",
-									"type": "String"
-								},
-								"sink": {
-									"path": "$['RentalDate']"
-								}
-							},
-							{
-								"source": {
-									"name": "ReturnDate",
-									"type": "String"
-								},
-								"sink": {
-									"path": "$['ReturnDate']"
-								}
-							},
-							{
-								"source": {
-									"name": "RentalCost",
-									"type": "String"
-								},
-								"sink": {
-									"path": "$['RentalCost']"
-								}
-							},
-							{
-								"source": {
-									"name": "LateFee",
-									"type": "String"
-								},
-								"sink": {
-									"path": "$['LateFee']"
-								}
-							},
-							{
-								"source": {
-									"name": "RewindFlag",
-									"type": "String"
-								},
-								"sink": {
-									"path": "$['RewindFlag']"
-								}
-							},
-							{
-								"source": {
-									"name": "CreatedDate",
-									"type": "String"
-								},
-								"sink": {
-									"path": "$['CreatedDate']"
-								}
-							},
-							{
-								"source": {
-									"name": "UpdatedDate",
-									"type": "String"
-								},
-								"sink": {
-									"path": "$['UpdatedDate']"
+									"path": "$['Gender']"
 								}
 							}
 						]
@@ -146,20 +83,20 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SourceDataset_xs3",
+						"referenceName": "SourceDataset_cxr",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DestinationDataset_xs3",
+						"referenceName": "DestinationDataset_cxr",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
 		"annotations": [],
-		"lastPublishTime": "2022-04-25T21:01:48Z"
+		"lastPublishTime": "2022-04-25T20:53:12Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

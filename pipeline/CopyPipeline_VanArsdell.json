@@ -1,9 +1,9 @@
 {
-	"name": "CopyPipeline_cloudstreaming_x4w",
+	"name": "CopyPipeline_VanArsdell",
 	"properties": {
 		"activities": [
 			{
-				"name": "ForEach_x4w",
+				"name": "ForEach",
 				"type": "ForEach",
 				"dependsOn": [],
 				"userProperties": [],
@@ -14,7 +14,7 @@
 					},
 					"activities": [
 						{
-							"name": "Copy_x4w",
+							"name": "Copy_VanArsdell",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -31,12 +31,12 @@
 								},
 								{
 									"name": "Destination",
-									"value": "cloudstreaming-ingest//@{item().destination.fileName}"
+									"value": "vanarsdell-ingest//@{item().destination.fileName}"
 								}
 							],
 							"typeProperties": {
 								"source": {
-									"type": "AzureSqlSource",
+									"type": "SqlServerSource",
 									"partitionOption": "None"
 								},
 								"sink": {
@@ -58,7 +58,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "sql_cloudstreaming_dataset",
+									"referenceName": "SourceDataset_ne1",
 									"type": "DatasetReference",
 									"parameters": {
 										"cw_table": "@item().source.table"
@@ -67,7 +67,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "cloudstreaming_ingest",
+									"referenceName": "DestinationDataset_ne1",
 									"type": "DatasetReference",
 									"parameters": {
 										"cw_fileName": "@item().destination.fileName"
@@ -85,10 +85,10 @@
 				"defaultValue": [
 					{
 						"source": {
-							"table": "Addresses"
+							"table": "Actors"
 						},
 						"destination": {
-							"fileName": "dboAddresses.txt"
+							"fileName": "dboActors.txt"
 						},
 						"copyActivity": {
 							"translator": {
@@ -96,13 +96,46 @@
 								"mappings": [
 									{
 										"source": {
-											"name": "AddressID",
+											"name": "ActorID",
 											"type": "Guid"
 										},
 										"sink": {
-											"path": "$['AddressID']"
+											"path": "$['ActorID']"
 										}
 									},
+									{
+										"source": {
+											"name": "ActorName",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['ActorName']"
+										}
+									},
+									{
+										"source": {
+											"name": "Gender",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['Gender']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "Customers"
+						},
+						"destination": {
+							"fileName": "dboCustomers.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
 									{
 										"source": {
 											"name": "CustomerID",
@@ -110,6 +143,24 @@
 										},
 										"sink": {
 											"path": "$['CustomerID']"
+										}
+									},
+									{
+										"source": {
+											"name": "LastName",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['LastName']"
+										}
+									},
+									{
+										"source": {
+											"name": "FirstName",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['FirstName']"
 										}
 									},
 									{
@@ -159,66 +210,6 @@
 									},
 									{
 										"source": {
-											"name": "CreatedDate",
-											"type": "Date"
-										},
-										"sink": {
-											"path": "$['CreatedDate']"
-										}
-									},
-									{
-										"source": {
-											"name": "UpdatedDate",
-											"type": "Date"
-										},
-										"sink": {
-											"path": "$['UpdatedDate']"
-										}
-									}
-								]
-							}
-						}
-					},
-					{
-						"source": {
-							"table": "Customers"
-						},
-						"destination": {
-							"fileName": "dboCustomers.txt"
-						},
-						"copyActivity": {
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "CustomerID",
-											"type": "Guid"
-										},
-										"sink": {
-											"path": "$['CustomerID']"
-										}
-									},
-									{
-										"source": {
-											"name": "LastName",
-											"type": "String"
-										},
-										"sink": {
-											"path": "$['LastName']"
-										}
-									},
-									{
-										"source": {
-											"name": "FirstName",
-											"type": "String"
-										},
-										"sink": {
-											"path": "$['FirstName']"
-										}
-									},
-									{
-										"source": {
 											"name": "PhoneNumber",
 											"type": "String"
 										},
@@ -242,6 +233,150 @@
 										},
 										"sink": {
 											"path": "$['UpdatedDate']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "MovieActors"
+						},
+						"destination": {
+							"fileName": "dboMovieActors.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "MovieActorID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieActorID']"
+										}
+									},
+									{
+										"source": {
+											"name": "MovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieID']"
+										}
+									},
+									{
+										"source": {
+											"name": "ActorID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['ActorID']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "Movies"
+						},
+						"destination": {
+							"fileName": "dboMovies.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "MovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieID']"
+										}
+									},
+									{
+										"source": {
+											"name": "MovieTitle",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['MovieTitle']"
+										}
+									},
+									{
+										"source": {
+											"name": "Category",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['Category']"
+										}
+									},
+									{
+										"source": {
+											"name": "Rating",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['Rating']"
+										}
+									},
+									{
+										"source": {
+											"name": "RunTimeMin",
+											"type": "Int16"
+										},
+										"sink": {
+											"path": "$['RunTimeMin']"
+										}
+									},
+									{
+										"source": {
+											"name": "ReleaseDate",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['ReleaseDate']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "OnlineMovieMappings"
+						},
+						"destination": {
+							"fileName": "dboOnlineMovieMappings.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "MovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieID']"
+										}
+									},
+									{
+										"source": {
+											"name": "OnlineMovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['OnlineMovieID']"
 										}
 									}
 								]
@@ -288,26 +423,53 @@
 									},
 									{
 										"source": {
-											"name": "StreamStart",
-											"type": "DateTime"
+											"name": "RentalDate",
+											"type": "Int32"
 										},
 										"sink": {
-											"path": "$['StreamStart']"
+											"path": "$['RentalDate']"
 										}
 									},
 									{
 										"source": {
-											"name": "StreamEnd",
-											"type": "DateTime"
+											"name": "ReturnDate",
+											"type": "Int32"
 										},
 										"sink": {
-											"path": "$['StreamEnd']"
+											"path": "$['ReturnDate']"
+										}
+									},
+									{
+										"source": {
+											"name": "RentalCost",
+											"type": "Decimal"
+										},
+										"sink": {
+											"path": "$['RentalCost']"
+										}
+									},
+									{
+										"source": {
+											"name": "LateFee",
+											"type": "Decimal"
+										},
+										"sink": {
+											"path": "$['LateFee']"
+										}
+									},
+									{
+										"source": {
+											"name": "RewindFlag",
+											"type": "Boolean"
+										},
+										"sink": {
+											"path": "$['RewindFlag']"
 										}
 									},
 									{
 										"source": {
 											"name": "CreatedDate",
-											"type": "Date"
+											"type": "DateTime"
 										},
 										"sink": {
 											"path": "$['CreatedDate']"
@@ -316,7 +478,7 @@
 									{
 										"source": {
 											"name": "UpdatedDate",
-											"type": "Date"
+											"type": "DateTime"
 										},
 										"sink": {
 											"path": "$['UpdatedDate']"
@@ -330,7 +492,7 @@
 			}
 		},
 		"annotations": [],
-		"lastPublishTime": "2022-04-25T19:03:42Z"
+		"lastPublishTime": "2022-04-25T20:46:32Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

@@ -1,0 +1,53 @@
+{
+	"name": "fourthcoffee_rentals",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Transactions.json",
+				"fileSystem": "fourthcoffee-ingest"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"TransactionID": {
+					"type": "string"
+				},
+				"CustomerID": {
+					"type": "string"
+				},
+				"MovieID": {
+					"type": "string"
+				},
+				"RentalDate": {
+					"type": "string"
+				},
+				"ReturnDate": {
+					"type": "string"
+				},
+				"RentalCost": {
+					"type": "string"
+				},
+				"LateFee": {
+					"type": "string"
+				},
+				"RewindFlag": {
+					"type": "string"
+				},
+				"CreatedDate": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

@@ -1,9 +1,9 @@
 {
-	"name": "CopyPipeline_pdv",
+	"name": "CopyPipeline_MovieActors_FC",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_pdv",
+				"name": "Copy_MovieActors_FC",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "Rentals/OnlineMovieMappings.csv"
+						"value": "Rentals/MovieActors.csv"
 					},
 					{
 						"name": "Destination",
@@ -53,6 +53,15 @@
 						"mappings": [
 							{
 								"source": {
+									"name": "MovieActorID",
+									"type": "String"
+								},
+								"sink": {
+									"path": "$['MovieActorID']"
+								}
+							},
+							{
+								"source": {
 									"name": "MovieID",
 									"type": "String"
 								},
@@ -62,11 +71,11 @@
 							},
 							{
 								"source": {
-									"name": "OnlineMovieID",
+									"name": "ActorID",
 									"type": "String"
 								},
 								"sink": {
-									"path": "$['OnlineMovieID']"
+									"path": "$['ActorID']"
 								}
 							}
 						]
@@ -74,20 +83,20 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SourceDataset_pdv",
+						"referenceName": "SourceDataset_dmy",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DestinationDataset_pdv",
+						"referenceName": "DestinationDataset_dmy",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
 		"annotations": [],
-		"lastPublishTime": "2022-04-25T21:00:57Z"
+		"lastPublishTime": "2022-04-25T20:58:59Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

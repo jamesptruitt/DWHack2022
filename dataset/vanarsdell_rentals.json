@@ -1,0 +1,53 @@
+{
+	"name": "vanarsdell_rentals",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dboTransactions.txt",
+				"fileSystem": "vanarsdell-ingest"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"TransactionID": {
+					"type": "string"
+				},
+				"CustomerID": {
+					"type": "string"
+				},
+				"MovieID": {
+					"type": "string"
+				},
+				"RentalDate": {
+					"type": "integer"
+				},
+				"ReturnDate": {
+					"type": "integer"
+				},
+				"RentalCost": {
+					"type": "number"
+				},
+				"LateFee": {
+					"type": "number"
+				},
+				"RewindFlag": {
+					"type": "boolean"
+				},
+				"CreatedDate": {
+					"type": "string"
+				},
+				"UpdatedDate": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

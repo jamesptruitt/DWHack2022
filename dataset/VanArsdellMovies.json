@@ -1,0 +1,41 @@
+{
+	"name": "VanArsdellMovies",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dboMovies.txt",
+				"fileSystem": "vanarsdell-ingest"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"MovieID": {
+					"type": "string"
+				},
+				"MovieTitle": {
+					"type": "string"
+				},
+				"Category": {
+					"type": "string"
+				},
+				"Rating": {
+					"type": "string"
+				},
+				"RunTimeMin": {
+					"type": "integer"
+				},
+				"ReleaseDate": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

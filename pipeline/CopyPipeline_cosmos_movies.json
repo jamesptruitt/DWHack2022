@@ -1,9 +1,9 @@
 {
-	"name": "CopyPipeline_ya3",
+	"name": "CopyPipeline_cosmos_movies",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_ya3",
+				"name": "Copy_cosmos_movies",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -16,25 +16,17 @@
 				"userProperties": [
 					{
 						"name": "Source",
-						"value": "Rentals/Customers.csv"
+						"value": "movies"
 					},
 					{
 						"name": "Destination",
-						"value": "fourthcoffee-ingest//"
+						"value": "movies-ingest//"
 					}
 				],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "FileServerReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings",
-							"skipLineCount": 0
-						}
+						"type": "CosmosDbSqlApiSource",
+						"preferredRegions": []
 					},
 					"sink": {
 						"type": "JsonSink",
@@ -53,101 +45,122 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "CustomerID",
-									"type": "String"
+									"path": "$['actors']"
 								},
 								"sink": {
-									"path": "$['CustomerID']"
+									"path": "$['actors']"
 								}
 							},
 							{
 								"source": {
-									"name": "LastName",
-									"type": "String"
+									"path": "$['availabilityDate']"
 								},
 								"sink": {
-									"path": "$['LastName']"
+									"path": "$['availabilityDate']"
 								}
 							},
 							{
 								"source": {
-									"name": "FirstName",
-									"type": "String"
+									"path": "$['genre']"
 								},
 								"sink": {
-									"path": "$['FirstName']"
+									"path": "$['genre']"
 								}
 							},
 							{
 								"source": {
-									"name": "AddressLine1",
-									"type": "String"
+									"path": "$['rating']"
 								},
 								"sink": {
-									"path": "$['AddressLine1']"
+									"path": "$['rating']"
 								}
 							},
 							{
 								"source": {
-									"name": "AddressLine2",
-									"type": "String"
+									"path": "$['releaseYear']"
 								},
 								"sink": {
-									"path": "$['AddressLine2']"
+									"path": "$['releaseYear']"
 								}
 							},
 							{
 								"source": {
-									"name": "City",
-									"type": "String"
+									"path": "$['runtime']"
 								},
 								"sink": {
-									"path": "$['City']"
+									"path": "$['runtime']"
 								}
 							},
 							{
 								"source": {
-									"name": "State",
-									"type": "String"
+									"path": "$['streamingAvailabilityDate']"
 								},
 								"sink": {
-									"path": "$['State']"
+									"path": "$['streamingAvailabilityDate']"
 								}
 							},
 							{
 								"source": {
-									"name": "ZipCode",
-									"type": "String"
+									"path": "$['tier']"
 								},
 								"sink": {
-									"path": "$['ZipCode']"
+									"path": "$['tier']"
 								}
 							},
 							{
 								"source": {
-									"name": "PhoneNumber",
-									"type": "String"
+									"path": "$['title']"
 								},
 								"sink": {
-									"path": "$['PhoneNumber']"
+									"path": "$['title']"
 								}
 							},
 							{
 								"source": {
-									"name": "CreatedDate",
-									"type": "String"
+									"path": "$['id']"
 								},
 								"sink": {
-									"path": "$['CreatedDate']"
+									"path": "$['id']"
 								}
 							},
 							{
 								"source": {
-									"name": "UpdatedDate",
-									"type": "String"
+									"path": "$['_rid']"
 								},
 								"sink": {
-									"path": "$['UpdatedDate']"
+									"path": "$['_rid']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['_self']"
+								},
+								"sink": {
+									"path": "$['_self']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['_etag']"
+								},
+								"sink": {
+									"path": "$['_etag']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['_attachments']"
+								},
+								"sink": {
+									"path": "$['_attachments']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['_ts']"
+								},
+								"sink": {
+									"path": "$['_ts']"
 								}
 							}
 						]
@@ -155,20 +168,20 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SourceDataset_ya3",
+						"referenceName": "cosmos_movies_dataset",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DestinationDataset_ya3",
+						"referenceName": "cosmos_movies_ingest",
 						"type": "DatasetReference"
 					}
 				]
 			}
 		],
 		"annotations": [],
-		"lastPublishTime": "2022-04-25T20:57:46Z"
+		"lastPublishTime": "2022-04-25T19:03:42Z"
 	},
 	"type": "Microsoft.DataFactory/factories/pipelines"
 }

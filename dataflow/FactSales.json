@@ -1,0 +1,106 @@
+{
+	"name": "FactSales",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "orders",
+						"type": "DatasetReference"
+					},
+					"name": "orders"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticsTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CreatedDate as string,",
+				"          CustomerID as string,",
+				"          LineNumber as integer,",
+				"          MovieID as string,",
+				"          OrderDate as date,",
+				"          OrderDetailID as string,",
+				"          OrderID as string,",
+				"          Quantity as integer,",
+				"          ShipDate as date,",
+				"          SourceID as integer,",
+				"          TotalCost as decimal(4,2),",
+				"          UniqueCustomerID as string,",
+				"          UniqueMovieID as string,",
+				"          UniqueOrderID as string,",
+				"          UnitCost as decimal(4,2),",
+				"          UpdatedDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine',",
+				"     preferredIntegralType: 'integer',",
+				"     preferredFractionalType: 'decimal',",
+				"     booleanFormat: ['true', 'false']) ~> orders",
+				"orders derive(OrderDateSK = dayOfYear(OrderDate),",
+				"          ShipDateSK = dayOfYear(ShipDate),",
+				"          CustomerSK = 1,",
+				"          MovieSK = 1,",
+				"          LocationSK = 1) ~> derivedColumn",
+				"derivedColumn derive(DaysToShip = minus(ShipDateSK,OrderDateSK)) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SalesSK as integer,",
+				"          OrderID as string,",
+				"          LineNumber as integer,",
+				"          OrderDateSK as integer,",
+				"          ShipDateSK as integer,",
+				"          CustomerSK as integer,",
+				"          LocationSK as integer,",
+				"          MovieSK as integer,",
+				"          DaysToShip as integer,",
+				"          Quantity as integer,",
+				"          UnitCost as decimal(19,4),",
+				"          ExtendedCost as decimal(19,4)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          OrderID,",
+				"          LineNumber,",
+				"          OrderDateSK,",
+				"          ShipDateSK,",
+				"          CustomerSK,",
+				"          LocationSK,",
+				"          MovieSK,",
+				"          Quantity,",
+				"          UnitCost,",
+				"          ExtendedCost = TotalCost,",
+				"          DaysToShip",
+				"     )) ~> sink"
+			]
+		}
+	}
+}
