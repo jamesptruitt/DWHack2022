@@ -83,6 +83,21 @@
 				},
 				{
 					"name": "filter1"
+				},
+				{
+					"name": "select4"
+				},
+				{
+					"name": "select5"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "aggregate4"
+				},
+				{
+					"name": "select6"
 				}
 			],
 			"scriptLines": [
@@ -135,8 +150,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flattenActors",
-				"filter1 derive(ActorID = uuid()) ~> AddUuid",
-				"select1, flattenActors union(byName: true)~> union1",
+				"aggregate4 derive(ActorID = uuid()) ~> AddUuid",
+				"select1, select2 union(byName: true)~> union1",
 				"joinVA aggregate(groupBy(sourceVanArsdell@ActorID,",
 				"          Gender,",
 				"          MovieID,",
@@ -152,12 +167,12 @@
 				"     skipDuplicateMapOutputs: true) ~> select1",
 				"union1 aggregate(groupBy(ActorID,",
 				"          Gender,",
-				"          union1@MovieID,",
+				"          MovieID,",
 				"          ActorName),",
 				"     count = count()) ~> aggregate2",
 				"select3 split(!isNull(ActorID),",
 				"     disjoint: false) ~> split1@(NotNullActorID, NullActorID)",
-				"AddUuid, split1@NotNullActorID union(byName: true)~> union2",
+				"select6, split1@NotNullActorID union(byName: true)~> union2",
 				"union2 split(!isNull(Gender),",
 				"     disjoint: false) ~> split2@(NotNullGender, NullGender)",
 				"split2@NullGender derive(Gender = \"U\") ~> AddGender",
@@ -180,6 +195,33 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
 				"split1@NullActorID filter(!isNull(ActorName)) ~> filter1",
+				"filter1 select(mapColumn(",
+				"          Gender,",
+				"          MovieID,",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select4",
+				"filter1 select(mapColumn(",
+				"          ActorID,",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select5",
+				"AddUuid, select4 join(aggregate4@ActorName == select4@ActorName,",
+				"     joinType:'outer',",
+				"     broadcast: 'auto')~> join1",
+				"select5 aggregate(groupBy(ActorName,",
+				"          ActorID),",
+				"     count = count()) ~> aggregate4",
+				"join1 select(mapColumn(",
+				"          ActorName = aggregate4@ActorName,",
+				"          ActorID,",
+				"          Gender,",
+				"          MovieID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select6",
 				"union3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
