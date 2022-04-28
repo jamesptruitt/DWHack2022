@@ -77,7 +77,12 @@
 				"     allowCopyCommand: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sinkActors",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          ActorID,",
+				"          ActorName,",
+				"          ActorGender = Gender",
+				"     )) ~> sinkActors",
 				"selectMovieActors sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -93,7 +98,11 @@
 				"     allowCopyCommand: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sinkMovieActors"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          MovieID,",
+				"          ActorID",
+				"     )) ~> sinkMovieActors"
 			]
 		}
 	}
