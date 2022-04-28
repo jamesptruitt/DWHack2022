@@ -1,0 +1,70 @@
+{
+	"name": "Streaming",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "cloudstreaming_transactions",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "streaming",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "addSourceID"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          TransactionID as string,",
+				"          CustomerID as string,",
+				"          MovieID as string,",
+				"          StreamStart as string,",
+				"          StreamEnd as string,",
+				"          CreatedDate as string,",
+				"          UpdatedDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> source1",
+				"source1 derive(SourceID = 1) ~> addSourceID",
+				"addSourceID derive(UniqueOrderID = concat(toString(SourceID),TransactionID),",
+				"          UniqueMovieID = concat(toString(SourceID),MovieID),",
+				"          UniqueCustomerID = concat(toString(SourceID),CustomerID),",
+				"          StreamStart = toTimestamp(StreamStart),",
+				"          StreamEnd = toTimestamp(StreamEnd)) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     mapColumn(",
+				"          SourceID,",
+				"          UniqueOrderID,",
+				"          UniqueMovieID,",
+				"          UniqueCustomerID,",
+				"          StreamStart,",
+				"          StreamEnd",
+				"     )) ~> sink1"
+			]
+		}
+	}
+}
