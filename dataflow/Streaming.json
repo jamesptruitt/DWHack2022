@@ -57,12 +57,15 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     mapColumn(",
+				"          TransactionID,",
+				"          CustomerID,",
+				"          MovieID,",
+				"          StreamStart,",
+				"          StreamEnd,",
 				"          SourceID,",
 				"          UniqueOrderID,",
 				"          UniqueMovieID,",
-				"          UniqueCustomerID,",
-				"          StreamStart,",
-				"          StreamEnd",
+				"          UniqueCustomerID",
 				"     )) ~> sink1"
 			]
 		}
