@@ -1,0 +1,26 @@
+{
+	"name": "AzureSynapseAnalyticsTableDimRatings",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSynapseAnalytics1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlDWTable",
+		"schema": [
+			{
+				"name": "MovieRatingSK",
+				"type": "tinyint",
+				"precision": 3
+			},
+			{
+				"name": "MovieRatingDescription",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "DimRatings"
+		}
+	}
+}

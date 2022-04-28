@@ -1,0 +1,104 @@
+{
+	"name": "Movies_Tables",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Movies",
+						"type": "DatasetReference"
+					},
+					"name": "sourceMovies"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticsCategories",
+						"type": "DatasetReference"
+					},
+					"name": "sinkDimCategories"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticsTableDimRatings",
+						"type": "DatasetReference"
+					},
+					"name": "sinkDimRatings"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticsTableDimMovies",
+						"type": "DatasetReference"
+					},
+					"name": "sinkDimMovies"
+				}
+			],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceMovies",
+				"sourceMovies aggregate() ~> aggregate1",
+				"sourceMovies sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          MovieCategorySK as integer,",
+				"          MovieCategoryDescription as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sinkDimCategories",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          MovieRatingSK as integer,",
+				"          MovieRatingDescription as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sinkDimRatings",
+				"sourceMovies sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          MovieSK as integer,",
+				"          MovieID as string,",
+				"          MovieTitle as string,",
+				"          MovieCategorySK as integer,",
+				"          MovieRatingSK as integer,",
+				"          MovieRunTimeMin as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sinkDimMovies"
+			]
+		}
+	}
+}
