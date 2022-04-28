@@ -1,9 +1,9 @@
 {
-	"name": "CopyPipeline_xs3",
+	"name": "CopyPipeline_Transactions_FC",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy_xs3",
+				"name": "Copy_Transactions_FC",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
