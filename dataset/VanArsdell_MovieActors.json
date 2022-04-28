@@ -1,0 +1,32 @@
+{
+	"name": "VanArsdell_MovieActors",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "dboMovieActors.txt",
+				"fileSystem": "vanarsdell-ingest"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"MovieActorID": {
+					"type": "string"
+				},
+				"MovieID": {
+					"type": "string"
+				},
+				"ActorID": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

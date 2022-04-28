@@ -1,0 +1,153 @@
+{
+	"name": "Actors",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SouthridgeMovies",
+						"type": "DatasetReference"
+					},
+					"name": "sourceSouthRidge"
+				},
+				{
+					"dataset": {
+						"referenceName": "VanArsdellActors",
+						"type": "DatasetReference"
+					},
+					"name": "sourceVanArsdell"
+				},
+				{
+					"dataset": {
+						"referenceName": "VanArsdell_MovieActors",
+						"type": "DatasetReference"
+					},
+					"name": "sourceVanArsdellMovieActors"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Actors",
+						"type": "DatasetReference"
+					},
+					"name": "sink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "joinVA"
+				},
+				{
+					"name": "flattenActors"
+				},
+				{
+					"name": "selectNames"
+				},
+				{
+					"name": "AddUuid"
+				},
+				{
+					"name": "joinUuids"
+				},
+				{
+					"name": "select"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "derivedColumn"
+				},
+				{
+					"name": "selectVA"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          actors as (name as string)[],",
+				"          availabilityDate as string,",
+				"          genre as string,",
+				"          rating as string,",
+				"          releaseYear as integer,",
+				"          runtime as integer,",
+				"          streamingAvailabilityDate as string,",
+				"          tier as integer,",
+				"          title as string,",
+				"          id as string,",
+				"          {_rid} as string,",
+				"          {_self} as string,",
+				"          {_etag} as string,",
+				"          {_attachments} as string,",
+				"          {_ts} as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceSouthRidge",
+				"source(output(",
+				"          ActorID as string,",
+				"          ActorName as string,",
+				"          Gender as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceVanArsdell",
+				"source(output(",
+				"          MovieActorID as string,",
+				"          MovieID as string,",
+				"          ActorID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceVanArsdellMovieActors",
+				"sourceVanArsdell, sourceVanArsdellMovieActors join(sourceVanArsdell@ActorID == sourceVanArsdellMovieActors@ActorID,",
+				"     joinType:'left',",
+				"     broadcast: 'auto')~> joinVA",
+				"sourceSouthRidge foldDown(unroll(actors),",
+				"     mapColumn(",
+				"          name = actors.name,",
+				"          MovieId = id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattenActors",
+				"flattenActors select(mapColumn(",
+				"          name",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectNames",
+				"selectNames derive(ActorId = uuid()) ~> AddUuid",
+				"flattenActors, AddUuid join(flattenActors@name == selectNames@name,",
+				"     joinType:'outer',",
+				"     broadcast: 'auto')~> joinUuids",
+				"joinUuids select(mapColumn(",
+				"          ActorName = flattenActors@name,",
+				"          MovieID = MovieId,",
+				"          ActorID = ActorId",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select",
+				"selectVA, derivedColumn union(byName: true)~> union1",
+				"select derive(Gender = \"U\") ~> derivedColumn",
+				"joinVA select(mapColumn(",
+				"          ActorID = sourceVanArsdell@ActorID,",
+				"          ActorName,",
+				"          Gender,",
+				"          MovieID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectVA",
+				"union1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink"
+			]
+		}
+	}
+}
