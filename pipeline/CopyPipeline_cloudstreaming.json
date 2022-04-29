@@ -37,6 +37,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT *\nFROM @{item().source.table}\nWHERE CreatedDate = '@{pipeline().parameters.Date}'\nOR UpdatedDate = '@{pipeline().parameters.Date}'",
 									"partitionOption": "None"
 								},
 								"sink": {
@@ -327,6 +328,10 @@
 						}
 					}
 				]
+			},
+			"Date": {
+				"type": "string",
+				"defaultValue": "2018-01-01"
 			}
 		},
 		"annotations": [],
