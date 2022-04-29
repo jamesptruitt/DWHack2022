@@ -15,11 +15,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": {
-					"value": "dboCustomers.txt",
-					"type": "Expression"
-				},
-				"fileSystem": "vanarsdell-ingest"
+				"fileSystem": "cloudsales-ingest"
 			},
 			"compressionCodec": "snappy"
 		},
