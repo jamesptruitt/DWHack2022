@@ -20,13 +20,21 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "VanArsdellMovies",
+						"referenceName": "VanArsdell_MovieActors",
 						"type": "DatasetReference"
 					},
-					"name": "sourceAVMovies"
+					"name": "sourceAVMovieActors"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Actors",
+						"type": "DatasetReference"
+					},
+					"name": "sinkActors"
+				}
+			],
 			"transformations": [
 				{
 					"name": "flattenActors"
@@ -41,7 +49,7 @@
 					"name": "selectNames"
 				},
 				{
-					"name": "join1"
+					"name": "joinActors"
 				},
 				{
 					"name": "selectRemoveDuplicateName"
@@ -59,6 +67,27 @@
 						"referenceName": "AddActorGender",
 						"type": "DataFlowReference"
 					}
+				},
+				{
+					"name": "joinMovieActors"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "joinOnName"
+				},
+				{
+					"name": "joinOnID"
+				},
+				{
+					"name": "selectSchemaName"
+				},
+				{
+					"name": "selectSchemaID"
+				},
+				{
+					"name": "unionData"
 				}
 			],
 			"scriptLines": [
@@ -93,17 +122,14 @@
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> sourceVAActors",
 				"source(output(",
+				"          MovieActorID as string,",
 				"          MovieID as string,",
-				"          MovieTitle as string,",
-				"          Category as string,",
-				"          Rating as string,",
-				"          RunTimeMin as integer,",
-				"          ReleaseDate as string",
+				"          ActorID as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine') ~> sourceAVMovies",
+				"     documentForm: 'documentPerLine') ~> sourceAVMovieActors",
 				"sourceSR foldDown(unroll(actors),",
 				"     mapColumn(",
 				"          ActorName = actors.name,",
@@ -125,8 +151,8 @@
 				"     skipDuplicateMapOutputs: true) ~> selectNames",
 				"sourceVAActors, selectNames join(sourceVAActors@ActorName == selectNames@ActorName,",
 				"     joinType:'outer',",
-				"     broadcast: 'auto')~> join1",
-				"join1 select(mapColumn(",
+				"     broadcast: 'auto')~> joinActors",
+				"joinActors select(mapColumn(",
 				"          ActorID,",
 				"          ActorName = sourceVAActors@ActorName,",
 				"          Gender",
@@ -144,7 +170,42 @@
 				"          ActorName,",
 				"          Gender",
 				"     ),",
-				"     composition: 'AddActorGender') ~> AddGender@(output1)"
+				"     composition: 'AddActorGender') ~> AddGender@(output1)",
+				"sourceAVMovieActors, flattenActors union(byName: true)~> joinMovieActors",
+				"joinMovieActors split(!isNull(ActorName),",
+				"     disjoint: false) ~> split1@(ActorNames, ActorIDs)",
+				"split1@ActorNames, AddGender@output1 join(split1@ActorNames@ActorName == AddGender@ActorName,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> joinOnName",
+				"split1@ActorIDs, AddGender@output1 join(MovieActorID == AddGender@ActorID,",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> joinOnID",
+				"joinOnName select(mapColumn(",
+				"          MovieActorID,",
+				"          MovieID,",
+				"          ActorID = AddGender@ActorID,",
+				"          ActorName = AddGender@ActorName,",
+				"          Gender",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectSchemaName",
+				"joinOnID select(mapColumn(",
+				"          MovieActorID,",
+				"          MovieID,",
+				"          ActorID = AddGender@ActorID,",
+				"          ActorName = AddGender@ActorName,",
+				"          Gender",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectSchemaID",
+				"selectSchemaName, selectSchemaID union(byName: true)~> unionData",
+				"unionData sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkActors"
 			]
 		}
 	}
