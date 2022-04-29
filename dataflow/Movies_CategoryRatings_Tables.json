@@ -54,9 +54,9 @@
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> sourceMovies",
-				"sourceMovies aggregate(groupBy(MovieRating),",
+				"sourceMovies aggregate(groupBy(Rating),",
 				"     count = count()) ~> aggregateRatings",
-				"sourceMovies aggregate(groupBy(MovieGenre),",
+				"sourceMovies aggregate(groupBy(Genre),",
 				"     count = count()) ~> aggregateCategories",
 				"aggregateCategories sink(allowSchemaDrift: false,",
 				"     validateSchema: true,",
@@ -75,7 +75,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          MovieCategoryDescription = MovieGenre",
+				"          MovieCategoryDescription = Genre",
 				"     )) ~> sinkDimCategories",
 				"aggregateRatings sink(allowSchemaDrift: false,",
 				"     validateSchema: true,",
@@ -94,7 +94,7 @@
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError',",
 				"     mapColumn(",
-				"          MovieRatingDescription = MovieRating",
+				"          MovieRatingDescription = Rating",
 				"     )) ~> sinkDimRatings"
 			]
 		}
