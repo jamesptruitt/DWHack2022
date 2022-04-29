@@ -153,11 +153,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"Date": {
-				"type": "string"
-			}
-		},
 		"annotations": []
 	}
 }
