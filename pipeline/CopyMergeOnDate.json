@@ -1,0 +1,130 @@
+{
+	"name": "CopyMergeOnDate",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyPipeline_CloudSales",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "CopyPipeline_CloudSales",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"cw_items": "[{\"source\":{\"table\":\"Addresses\"},\"destination\":{\"fileName\":\"dboAddresses.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"AddressID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['AddressID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"AddressLine1\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine1']\"}},{\"source\":{\"name\":\"AddressLine2\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine2']\"}},{\"source\":{\"name\":\"City\",\"type\":\"String\"},\"sink\":{\"path\":\"$['City']\"}},{\"source\":{\"name\":\"State\",\"type\":\"String\"},\"sink\":{\"path\":\"$['State']\"}},{\"source\":{\"name\":\"ZipCode\",\"type\":\"String\"},\"sink\":{\"path\":\"$['ZipCode']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Customers\"},\"destination\":{\"fileName\":\"dboCustomers.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"LastName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['LastName']\"}},{\"source\":{\"name\":\"FirstName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['FirstName']\"}},{\"source\":{\"name\":\"PhoneNumber\",\"type\":\"String\"},\"sink\":{\"path\":\"$['PhoneNumber']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Transactions\"},\"destination\":{\"fileName\":\"dboTransactions.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"TransactionID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['TransactionID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"MovieID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['MovieID']\"}},{\"source\":{\"name\":\"StreamStart\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamStart']\"}},{\"source\":{\"name\":\"StreamEnd\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamEnd']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}}]",
+						"Date": {
+							"value": "@pipeline().parameters.date",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "CopyPipeline_cloudstreaming",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "CopyPipeline_cloudstreaming",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"cw_items": "[{\"source\":{\"table\":\"Addresses\"},\"destination\":{\"fileName\":\"dboAddresses.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"AddressID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['AddressID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"AddressLine1\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine1']\"}},{\"source\":{\"name\":\"AddressLine2\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine2']\"}},{\"source\":{\"name\":\"City\",\"type\":\"String\"},\"sink\":{\"path\":\"$['City']\"}},{\"source\":{\"name\":\"State\",\"type\":\"String\"},\"sink\":{\"path\":\"$['State']\"}},{\"source\":{\"name\":\"ZipCode\",\"type\":\"String\"},\"sink\":{\"path\":\"$['ZipCode']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Customers\"},\"destination\":{\"fileName\":\"dboCustomers.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"LastName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['LastName']\"}},{\"source\":{\"name\":\"FirstName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['FirstName']\"}},{\"source\":{\"name\":\"PhoneNumber\",\"type\":\"String\"},\"sink\":{\"path\":\"$['PhoneNumber']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Transactions\"},\"destination\":{\"fileName\":\"dboTransactions.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"TransactionID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['TransactionID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"MovieID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['MovieID']\"}},{\"source\":{\"name\":\"StreamStart\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamStart']\"}},{\"source\":{\"name\":\"StreamEnd\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamEnd']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}}]",
+						"Date": {
+							"value": "@pipeline().parameters.date",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "CopyPipeline_FC_2018",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "CopyPipeline_FC_2018",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"Date": {
+							"value": "@pipeline().parameters.date",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "CopyPipeline_VanArsdell",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "CopyPipeline_VanArsdell",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"cw_items": "[{\"source\":{\"table\":\"Addresses\"},\"destination\":{\"fileName\":\"dboAddresses.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"AddressID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['AddressID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"AddressLine1\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine1']\"}},{\"source\":{\"name\":\"AddressLine2\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine2']\"}},{\"source\":{\"name\":\"City\",\"type\":\"String\"},\"sink\":{\"path\":\"$['City']\"}},{\"source\":{\"name\":\"State\",\"type\":\"String\"},\"sink\":{\"path\":\"$['State']\"}},{\"source\":{\"name\":\"ZipCode\",\"type\":\"String\"},\"sink\":{\"path\":\"$['ZipCode']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Customers\"},\"destination\":{\"fileName\":\"dboCustomers.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"LastName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['LastName']\"}},{\"source\":{\"name\":\"FirstName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['FirstName']\"}},{\"source\":{\"name\":\"PhoneNumber\",\"type\":\"String\"},\"sink\":{\"path\":\"$['PhoneNumber']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Transactions\"},\"destination\":{\"fileName\":\"dboTransactions.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"TransactionID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['TransactionID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"MovieID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['MovieID']\"}},{\"source\":{\"name\":\"StreamStart\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamStart']\"}},{\"source\":{\"name\":\"StreamEnd\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamEnd']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}}]",
+						"Date": {
+							"value": "@pipeline().parameters.date",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "merge data",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "CopyPipeline_cloudstreaming",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "CopyPipeline_FC_2018",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "CopyPipeline_VanArsdell",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "CopyPipeline_CloudSales",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "merge data",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"parameters": {
+			"date": {
+				"type": "string"
+			}
+		},
+		"annotations": []
+	}
+}

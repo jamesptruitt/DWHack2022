@@ -9,7 +9,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@pipeline().parameters.cw_items",
+						"value": "@array(pipeline().parameters.cw_items)",
 						"type": "Expression"
 					},
 					"activities": [
@@ -37,7 +37,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "SqlServerSource",
-									"sqlReaderQuery": "SELECT *\nFROM @{item().source.table}\nWHERE CreatedDate = '@{pipeline().parameters.Date}'\nOR UpdatedDate = '@{pipeline().parameters.Date}'",
+									"sqlReaderQuery": {
+										"value": "SELECT *\nFROM @{item().source.table}\nWHERE CreatedDate = '@{pipeline().parameters.Date}'\nOR UpdatedDate = '@{pipeline().parameters.Date}'",
+										"type": "Expression"
+									},
 									"partitionOption": "None"
 								},
 								"sink": {
@@ -86,7 +89,7 @@
 		],
 		"parameters": {
 			"cw_items": {
-				"type": "Array",
+				"type": "string",
 				"defaultValue": [
 					{
 						"source": {
