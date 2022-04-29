@@ -1,0 +1,22 @@
+{
+	"name": "VanArsdelLtdSqlServer",
+	"properties": {
+		"annotations": [],
+		"type": "SqlServer",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Data Source=VanArsdelLtd;Initial Catalog=OnPremRentals;User ID=southridge",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "MDWKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "vanarsdelltd-vm-sql-password"
+			}
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntime2",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
