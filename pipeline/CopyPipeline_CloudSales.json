@@ -37,6 +37,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "SELECT *\nFROM Orders\nWHERE CreatedDate = '@{pipeline().parameters.Date}'\nOR UpdatedDate = '@{pipeline().parameters.Date}'",
+										"type": "Expression"
+									},
 									"partitionOption": "None"
 								},
 								"sink": {
