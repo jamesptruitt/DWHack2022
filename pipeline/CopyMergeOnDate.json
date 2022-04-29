@@ -91,9 +91,15 @@
 				}
 			},
 			{
-				"name": "merge data",
+				"name": "MergeOnDate",
 				"type": "ExecutePipeline",
 				"dependsOn": [
+					{
+						"activity": "CopyPipeline_CloudSales",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
 					{
 						"activity": "CopyPipeline_cloudstreaming",
 						"dependencyConditions": [
@@ -108,12 +114,6 @@
 					},
 					{
 						"activity": "CopyPipeline_VanArsdell",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "CopyPipeline_CloudSales",
 						"dependencyConditions": [
 							"Succeeded"
 						]
