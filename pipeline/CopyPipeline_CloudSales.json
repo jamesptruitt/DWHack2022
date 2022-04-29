@@ -424,6 +424,12 @@
 				"defaultValue": "2018-01-01"
 			}
 		},
+		"variables": {
+			"Date": {
+				"type": "String",
+				"defaultValue": "2018-01-01"
+			}
+		},
 		"annotations": [],
 		"lastPublishTime": "2022-04-25T19:02:07Z"
 	},
