@@ -65,7 +65,10 @@
 									"referenceName": "SourceDataset_ne1",
 									"type": "DatasetReference",
 									"parameters": {
-										"cw_table": "@item().source.table"
+										"cw_table": {
+											"value": "@item().source.table",
+											"type": "Expression"
+										}
 									}
 								}
 							],
@@ -89,7 +92,7 @@
 		],
 		"parameters": {
 			"cw_items": {
-				"type": "string",
+				"type": "array",
 				"defaultValue": [
 					{
 						"source": {
