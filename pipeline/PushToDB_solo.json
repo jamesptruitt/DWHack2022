@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "MovieTable",
+						"referenceName": "Movies_CategoryRatings_Tables",
 						"type": "DataFlowReference"
 					},
 					"staging": {
