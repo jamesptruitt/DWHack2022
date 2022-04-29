@@ -29,6 +29,10 @@
 						"storeSettings": {
 							"type": "FileServerReadSettings",
 							"recursive": true,
+							"wildcardFileName": {
+								"value": "@{pipeline().parameters.Date}.csv",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -155,7 +159,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SourceDataset_ya3",
+						"referenceName": "FourthCoffeeCustomers2018",
 						"type": "DatasetReference"
 					}
 				],

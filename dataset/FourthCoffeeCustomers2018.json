@@ -1,0 +1,63 @@
+{
+	"name": "FourthCoffeeCustomers2018",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FourthCoffeeFileServer",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"folderPath": "Transactions_2018"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "TransactionID",
+				"type": "String"
+			},
+			{
+				"name": "CustomerID",
+				"type": "String"
+			},
+			{
+				"name": "MovieID",
+				"type": "String"
+			},
+			{
+				"name": "RentalDate",
+				"type": "String"
+			},
+			{
+				"name": "ReturnDate",
+				"type": "String"
+			},
+			{
+				"name": "RentalCost",
+				"type": "String"
+			},
+			{
+				"name": "LateFee",
+				"type": "String"
+			},
+			{
+				"name": "RewindFlag",
+				"type": "String"
+			},
+			{
+				"name": "CreatedDate",
+				"type": "String"
+			},
+			{
+				"name": "UpdatedDate",
+				"type": "String"
+			}
+		]
+	}
+}
