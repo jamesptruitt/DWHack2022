@@ -110,6 +110,9 @@
 				},
 				{
 					"name": "split3"
+				},
+				{
+					"name": "join3"
 				}
 			],
 			"scriptLines": [
@@ -220,7 +223,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select5",
-				"AddUuid, select4 join(split3@NewActorID@ActorName == select4@ActorName,",
+				"join3, select4 join(split3@NewActorID@ActorName == select4@ActorName,",
 				"     joinType:'outer',",
 				"     broadcast: 'auto')~> join1",
 				"select5 aggregate(groupBy(ActorName,",
@@ -228,7 +231,7 @@
 				"     count = count()) ~> aggregate4",
 				"join1 select(mapColumn(",
 				"          ActorName = aggregate4@ActorName,",
-				"          ActorID,",
+				"          ActorID = AddUuid@ActorID,",
 				"          Gender,",
 				"          MovieID",
 				"     ),",
@@ -251,6 +254,9 @@
 				"     skipDuplicateMapOutputs: true) ~> select8",
 				"select8 split(!isNull(ActorID),",
 				"     disjoint: false) ~> split3@(ExisitingNullActorID, NewActorID)",
+				"AddUuid, split3@ExisitingNullActorID join(split3@NewActorID@ActorName == split3@ExisitingNullActorID@ActorName,",
+				"     joinType:'outer',",
+				"     broadcast: 'auto')~> join3",
 				"union3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
