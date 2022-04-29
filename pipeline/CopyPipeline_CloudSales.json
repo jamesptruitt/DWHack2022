@@ -38,7 +38,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "SELECT *\nFROM Orders\nWHERE CreatedDate = '@{pipeline().parameters.Date}'\nOR UpdatedDate = '@{pipeline().parameters.Date}'",
+										"value": "SELECT *\nFROM @{item().source.table}\nWHERE CreatedDate = '@{pipeline().parameters.Date}'\nOR UpdatedDate = '@{pipeline().parameters.Date}'",
 										"type": "Expression"
 									},
 									"partitionOption": "None"
