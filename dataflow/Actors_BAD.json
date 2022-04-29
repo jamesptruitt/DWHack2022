@@ -1,5 +1,5 @@
 {
-	"name": "Actors",
+	"name": "Actors_BAD",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {

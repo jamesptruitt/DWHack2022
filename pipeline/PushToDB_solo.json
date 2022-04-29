@@ -54,7 +54,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Actors2",
+						"referenceName": "Actors",
 						"type": "DataFlowReference"
 					},
 					"compute": {
