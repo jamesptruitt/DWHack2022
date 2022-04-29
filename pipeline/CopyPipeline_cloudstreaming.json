@@ -71,7 +71,11 @@
 									"referenceName": "cloudstreaming_ingest",
 									"type": "DatasetReference",
 									"parameters": {
-										"cw_fileName": "@item().destination.fileName"
+										"cw_fileName": "@item().destination.fileName",
+										"Date": {
+											"value": "@pipeline().parameters.Date",
+											"type": "Expression"
+										}
 									}
 								}
 							]
