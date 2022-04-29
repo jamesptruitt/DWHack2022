@@ -122,16 +122,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "merge data",
+						"referenceName": "MergeOnDate",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"Date": {
-							"value": "@pipeline().parameters.date",
-							"type": "Expression"
-						}
-					}
+					"waitOnCompletion": true
 				}
 			}
 		],
