@@ -1,0 +1,283 @@
+{
+	"name": "Actors",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SouthridgeMovies",
+						"type": "DatasetReference"
+					},
+					"name": "sourceSouthRidge"
+				},
+				{
+					"dataset": {
+						"referenceName": "VanArsdellActors",
+						"type": "DatasetReference"
+					},
+					"name": "sourceVanArsdell"
+				},
+				{
+					"dataset": {
+						"referenceName": "VanArsdell_MovieActors",
+						"type": "DatasetReference"
+					},
+					"name": "sourceVanArsdellMovieActors"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Actors",
+						"type": "DatasetReference"
+					},
+					"name": "sink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "joinVA"
+				},
+				{
+					"name": "flattenActors"
+				},
+				{
+					"name": "AddUuid"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "aggregate2"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "union2"
+				},
+				{
+					"name": "split2"
+				},
+				{
+					"name": "AddGender"
+				},
+				{
+					"name": "union3"
+				},
+				{
+					"name": "aggregate3"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "select4"
+				},
+				{
+					"name": "select5"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "aggregate4"
+				},
+				{
+					"name": "select6"
+				},
+				{
+					"name": "select7"
+				},
+				{
+					"name": "join2"
+				},
+				{
+					"name": "select8"
+				},
+				{
+					"name": "split3"
+				},
+				{
+					"name": "aggregate5"
+				},
+				{
+					"name": "select9"
+				},
+				{
+					"name": "union4"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          actors as (name as string)[],",
+				"          availabilityDate as string,",
+				"          genre as string,",
+				"          rating as string,",
+				"          releaseYear as integer,",
+				"          runtime as integer,",
+				"          streamingAvailabilityDate as string,",
+				"          tier as integer,",
+				"          title as string,",
+				"          id as string,",
+				"          {_rid} as string,",
+				"          {_self} as string,",
+				"          {_etag} as string,",
+				"          {_attachments} as string,",
+				"          {_ts} as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceSouthRidge",
+				"source(output(",
+				"          ActorID as string,",
+				"          ActorName as string,",
+				"          Gender as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceVanArsdell",
+				"source(output(",
+				"          MovieActorID as string,",
+				"          MovieID as string,",
+				"          ActorID as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceVanArsdellMovieActors",
+				"sourceVanArsdell, sourceVanArsdellMovieActors join(sourceVanArsdell@ActorID == sourceVanArsdellMovieActors@ActorID,",
+				"     joinType:'left',",
+				"     broadcast: 'auto')~> joinVA",
+				"sourceSouthRidge foldDown(unroll(actors),",
+				"     mapColumn(",
+				"          name = actors.name,",
+				"          MovieId = id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattenActors",
+				"split3@NewActorID derive(ActorID = uuid()) ~> AddUuid",
+				"select1, select2 union(byName: true)~> union1",
+				"joinVA aggregate(groupBy(sourceVanArsdell@ActorID,",
+				"          Gender,",
+				"          MovieID,",
+				"          ActorName),",
+				"     MovieCount = count()) ~> aggregate1",
+				"aggregate1 select(mapColumn(",
+				"          ActorID,",
+				"          Gender,",
+				"          MovieID,",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"union1 aggregate(groupBy(ActorID,",
+				"          Gender,",
+				"          MovieID,",
+				"          ActorName),",
+				"     count = count()) ~> aggregate2",
+				"select3 split(!isNull(ActorID),",
+				"     disjoint: false) ~> split1@(NotNullActorID, NullActorID)",
+				"select6, split1@NotNullActorID union(byName: true)~> union2",
+				"union2 split(!isNull(Gender),",
+				"     disjoint: false) ~> split2@(NotNullGender, NullGender)",
+				"split2@NullGender derive(Gender = \"U\") ~> AddGender",
+				"AddGender, split2@NotNullGender union(byName: true)~> union3",
+				"flattenActors aggregate(groupBy(name,",
+				"          MovieId),",
+				"     count = count()) ~> aggregate3",
+				"aggregate3 select(mapColumn(",
+				"          ActorName = name,",
+				"          MovieID = MovieId",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"aggregate2 select(mapColumn(",
+				"          ActorID,",
+				"          Gender,",
+				"          MovieID,",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"split1@NullActorID filter(!isNull(ActorName)) ~> filter1",
+				"filter1 select(mapColumn(",
+				"          Gender,",
+				"          MovieID,",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select4",
+				"filter1 select(mapColumn(",
+				"          ActorID,",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select5",
+				"union4, select4 join(union4@ActorName == select4@ActorName,",
+				"     joinType:'outer',",
+				"     broadcast: 'auto')~> join1",
+				"select5 aggregate(groupBy(ActorName,",
+				"          ActorID),",
+				"     count = count()) ~> aggregate4",
+				"join1 select(mapColumn(",
+				"          ActorName = union4@ActorName,",
+				"          ActorID,",
+				"          Gender,",
+				"          MovieID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select6",
+				"aggregate1 select(mapColumn(",
+				"          ActorID,",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select7",
+				"aggregate4, select7 join(aggregate4@ActorName == select7@ActorName,",
+				"     joinType:'left',",
+				"     broadcast: 'auto')~> join2",
+				"join2 select(mapColumn(",
+				"          ActorName = aggregate4@ActorName,",
+				"          ActorID = select7@ActorID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select8",
+				"select9 split(!isNull(ActorID),",
+				"     disjoint: false) ~> split3@(ExisitingActorID, NewActorID)",
+				"select8 aggregate(groupBy(ActorName,",
+				"          ActorID),",
+				"     count = count()) ~> aggregate5",
+				"aggregate5 select(mapColumn(",
+				"          ActorName,",
+				"          ActorID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select9",
+				"AddUuid, split3@ExisitingActorID union(byName: true)~> union4",
+				"union3 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink"
+			]
+		}
+	}
+}
