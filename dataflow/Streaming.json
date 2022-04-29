@@ -30,6 +30,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     Date as string",
+				"}",
 				"source(output(",
 				"          TransactionID as string,",
 				"          CustomerID as string,",
