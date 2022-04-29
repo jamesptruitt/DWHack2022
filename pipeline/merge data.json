@@ -17,7 +17,13 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Orders",
-						"type": "DataFlowReference"
+						"type": "DataFlowReference",
+						"parameters": {
+							"Date": {
+								"value": "@pipeline().parameters.Date",
+								"type": "Expression"
+							}
+						}
 					},
 					"compute": {
 						"coreCount": 8,
