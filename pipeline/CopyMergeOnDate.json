@@ -14,7 +14,6 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"cw_items": "[{\"source\":{\"table\":\"Addresses\"},\"destination\":{\"fileName\":\"dboAddresses.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"AddressID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['AddressID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"AddressLine1\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine1']\"}},{\"source\":{\"name\":\"AddressLine2\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine2']\"}},{\"source\":{\"name\":\"City\",\"type\":\"String\"},\"sink\":{\"path\":\"$['City']\"}},{\"source\":{\"name\":\"State\",\"type\":\"String\"},\"sink\":{\"path\":\"$['State']\"}},{\"source\":{\"name\":\"ZipCode\",\"type\":\"String\"},\"sink\":{\"path\":\"$['ZipCode']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Customers\"},\"destination\":{\"fileName\":\"dboCustomers.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"LastName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['LastName']\"}},{\"source\":{\"name\":\"FirstName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['FirstName']\"}},{\"source\":{\"name\":\"PhoneNumber\",\"type\":\"String\"},\"sink\":{\"path\":\"$['PhoneNumber']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Transactions\"},\"destination\":{\"fileName\":\"dboTransactions.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"TransactionID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['TransactionID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"MovieID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['MovieID']\"}},{\"source\":{\"name\":\"StreamStart\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamStart']\"}},{\"source\":{\"name\":\"StreamEnd\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamEnd']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}}]",
 						"Date": {
 							"value": "@pipeline().parameters.date",
 							"type": "Expression"
@@ -34,7 +33,10 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"cw_items": "[{\"source\":{\"table\":\"Addresses\"},\"destination\":{\"fileName\":\"dboAddresses.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"AddressID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['AddressID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"AddressLine1\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine1']\"}},{\"source\":{\"name\":\"AddressLine2\",\"type\":\"String\"},\"sink\":{\"path\":\"$['AddressLine2']\"}},{\"source\":{\"name\":\"City\",\"type\":\"String\"},\"sink\":{\"path\":\"$['City']\"}},{\"source\":{\"name\":\"State\",\"type\":\"String\"},\"sink\":{\"path\":\"$['State']\"}},{\"source\":{\"name\":\"ZipCode\",\"type\":\"String\"},\"sink\":{\"path\":\"$['ZipCode']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Customers\"},\"destination\":{\"fileName\":\"dboCustomers.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"LastName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['LastName']\"}},{\"source\":{\"name\":\"FirstName\",\"type\":\"String\"},\"sink\":{\"path\":\"$['FirstName']\"}},{\"source\":{\"name\":\"PhoneNumber\",\"type\":\"String\"},\"sink\":{\"path\":\"$['PhoneNumber']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}},{\"source\":{\"table\":\"Transactions\"},\"destination\":{\"fileName\":\"dboTransactions.txt\"},\"copyActivity\":{\"translator\":{\"type\":\"TabularTranslator\",\"mappings\":[{\"source\":{\"name\":\"TransactionID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['TransactionID']\"}},{\"source\":{\"name\":\"CustomerID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['CustomerID']\"}},{\"source\":{\"name\":\"MovieID\",\"type\":\"Guid\"},\"sink\":{\"path\":\"$['MovieID']\"}},{\"source\":{\"name\":\"StreamStart\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamStart']\"}},{\"source\":{\"name\":\"StreamEnd\",\"type\":\"DateTime\"},\"sink\":{\"path\":\"$['StreamEnd']\"}},{\"source\":{\"name\":\"CreatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['CreatedDate']\"}},{\"source\":{\"name\":\"UpdatedDate\",\"type\":\"Date\"},\"sink\":{\"path\":\"$['UpdatedDate']\"}}]}}}]",
+						"cw_items": {
+							"value": "@pipeline().parameters.cw_items",
+							"type": "Expression"
+						},
 						"Date": {
 							"value": "@pipeline().parameters.date",
 							"type": "Expression"
@@ -122,7 +124,256 @@
 		],
 		"parameters": {
 			"date": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "2018-01-01"
+			},
+			"cw_items": {
+				"type": "array",
+				"defaultValue": [
+					{
+						"source": {
+							"table": "Addresses"
+						},
+						"destination": {
+							"fileName": "dboAddresses.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "AddressID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['AddressID']"
+										}
+									},
+									{
+										"source": {
+											"name": "CustomerID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['CustomerID']"
+										}
+									},
+									{
+										"source": {
+											"name": "AddressLine1",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['AddressLine1']"
+										}
+									},
+									{
+										"source": {
+											"name": "AddressLine2",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['AddressLine2']"
+										}
+									},
+									{
+										"source": {
+											"name": "City",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['City']"
+										}
+									},
+									{
+										"source": {
+											"name": "State",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['State']"
+										}
+									},
+									{
+										"source": {
+											"name": "ZipCode",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['ZipCode']"
+										}
+									},
+									{
+										"source": {
+											"name": "CreatedDate",
+											"type": "Date"
+										},
+										"sink": {
+											"path": "$['CreatedDate']"
+										}
+									},
+									{
+										"source": {
+											"name": "UpdatedDate",
+											"type": "Date"
+										},
+										"sink": {
+											"path": "$['UpdatedDate']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "Customers"
+						},
+						"destination": {
+							"fileName": "dboCustomers.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "CustomerID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['CustomerID']"
+										}
+									},
+									{
+										"source": {
+											"name": "LastName",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['LastName']"
+										}
+									},
+									{
+										"source": {
+											"name": "FirstName",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['FirstName']"
+										}
+									},
+									{
+										"source": {
+											"name": "PhoneNumber",
+											"type": "String"
+										},
+										"sink": {
+											"path": "$['PhoneNumber']"
+										}
+									},
+									{
+										"source": {
+											"name": "CreatedDate",
+											"type": "Date"
+										},
+										"sink": {
+											"path": "$['CreatedDate']"
+										}
+									},
+									{
+										"source": {
+											"name": "UpdatedDate",
+											"type": "Date"
+										},
+										"sink": {
+											"path": "$['UpdatedDate']"
+										}
+									}
+								]
+							}
+						}
+					},
+					{
+						"source": {
+							"table": "Transactions"
+						},
+						"destination": {
+							"fileName": "dboTransactions.txt"
+						},
+						"copyActivity": {
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "TransactionID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['TransactionID']"
+										}
+									},
+									{
+										"source": {
+											"name": "CustomerID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['CustomerID']"
+										}
+									},
+									{
+										"source": {
+											"name": "MovieID",
+											"type": "Guid"
+										},
+										"sink": {
+											"path": "$['MovieID']"
+										}
+									},
+									{
+										"source": {
+											"name": "StreamStart",
+											"type": "DateTime"
+										},
+										"sink": {
+											"path": "$['StreamStart']"
+										}
+									},
+									{
+										"source": {
+											"name": "StreamEnd",
+											"type": "DateTime"
+										},
+										"sink": {
+											"path": "$['StreamEnd']"
+										}
+									},
+									{
+										"source": {
+											"name": "CreatedDate",
+											"type": "Date"
+										},
+										"sink": {
+											"path": "$['CreatedDate']"
+										}
+									},
+									{
+										"source": {
+											"name": "UpdatedDate",
+											"type": "Date"
+										},
+										"sink": {
+											"path": "$['UpdatedDate']"
+										}
+									}
+								]
+							}
+						}
+					}
+				]
 			}
 		},
 		"annotations": []
