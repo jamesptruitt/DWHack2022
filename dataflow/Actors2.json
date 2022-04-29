@@ -23,7 +23,7 @@
 						"referenceName": "VanArsdell_MovieActors",
 						"type": "DatasetReference"
 					},
-					"name": "sourceAVMovieActors"
+					"name": "sourceVAMovieActors"
 				}
 			],
 			"sinks": [
@@ -75,19 +75,31 @@
 					"name": "split1"
 				},
 				{
-					"name": "joinOnName"
-				},
-				{
 					"name": "joinOnID"
 				},
 				{
 					"name": "selectSchemaName"
 				},
 				{
-					"name": "selectSchemaID"
+					"name": "joinOnName"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "addMovieActorUUID"
+				},
+				{
+					"name": "filterNullMovies"
+				},
+				{
+					"name": "filterNullMovies2"
 				},
 				{
 					"name": "unionData"
+				},
+				{
+					"name": "selectSchemaID"
 				}
 			],
 			"scriptLines": [
@@ -129,7 +141,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
-				"     documentForm: 'documentPerLine') ~> sourceAVMovieActors",
+				"     documentForm: 'documentPerLine') ~> sourceVAMovieActors",
 				"sourceSR foldDown(unroll(actors),",
 				"     mapColumn(",
 				"          ActorName = actors.name,",
@@ -171,34 +183,44 @@
 				"          Gender",
 				"     ),",
 				"     composition: 'AddActorGender') ~> AddGender@(output1)",
-				"sourceAVMovieActors, flattenActors union(byName: true)~> joinMovieActors",
+				"sourceVAMovieActors, flattenActors union(byName: true)~> joinMovieActors",
 				"joinMovieActors split(!isNull(ActorName),",
 				"     disjoint: false) ~> split1@(ActorNames, ActorIDs)",
-				"split1@ActorNames, AddGender@output1 join(split1@ActorNames@ActorName == AddGender@ActorName,",
-				"     joinType:'left',",
-				"     broadcast: 'auto')~> joinOnName",
-				"split1@ActorIDs, AddGender@output1 join(MovieActorID == AddGender@ActorID,",
-				"     joinType:'left',",
+				"split1@ActorIDs, select1 join(split1@ActorIDs@ActorID == select1@ActorID,",
+				"     joinType:'outer',",
 				"     broadcast: 'auto')~> joinOnID",
-				"joinOnName select(mapColumn(",
+				"addMovieActorUUID select(mapColumn(",
 				"          MovieActorID,",
 				"          MovieID,",
-				"          ActorID = AddGender@ActorID,",
-				"          ActorName = AddGender@ActorName,",
+				"          ActorID = select1@ActorID,",
+				"          ActorName = select1@ActorName,",
 				"          Gender",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectSchemaName",
-				"joinOnID select(mapColumn(",
+				"split1@ActorNames, select1 join(split1@ActorNames@ActorName == select1@ActorName,",
+				"     joinType:'outer',",
+				"     broadcast: 'auto')~> joinOnName",
+				"AddGender@output1 select(mapColumn(",
+				"          ActorID,",
+				"          ActorName,",
+				"          Gender",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"filterNullMovies2 derive(MovieActorID = uuid()) ~> addMovieActorUUID",
+				"joinOnID filter(!isNull(MovieID)) ~> filterNullMovies",
+				"joinOnName filter(!isNull(MovieID)) ~> filterNullMovies2",
+				"selectSchemaName, selectSchemaID union(byName: true)~> unionData",
+				"filterNullMovies select(mapColumn(",
 				"          MovieActorID,",
 				"          MovieID,",
-				"          ActorID = AddGender@ActorID,",
-				"          ActorName = AddGender@ActorName,",
+				"          ActorID = select1@ActorID,",
+				"          ActorName = select1@ActorName,",
 				"          Gender",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectSchemaID",
-				"selectSchemaName, selectSchemaID union(byName: true)~> unionData",
 				"unionData sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
