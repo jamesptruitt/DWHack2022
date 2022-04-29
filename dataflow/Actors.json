@@ -113,6 +113,12 @@
 				},
 				{
 					"name": "join3"
+				},
+				{
+					"name": "aggregate5"
+				},
+				{
+					"name": "select9"
 				}
 			],
 			"scriptLines": [
@@ -243,20 +249,29 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select7",
-				"aggregate4, select7 join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
-				"     joinType:'inner',",
+				"aggregate4, select7 join(aggregate4@ActorName == select7@ActorName,",
+				"     joinType:'left',",
 				"     broadcast: 'auto')~> join2",
 				"join2 select(mapColumn(",
 				"          ActorName = aggregate4@ActorName,",
-				"          ActorID = aggregate4@ActorID",
+				"          ActorID = select7@ActorID",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select8",
-				"select8 split(!isNull(ActorID),",
-				"     disjoint: false) ~> split3@(ExisitingNullActorID, NewActorID)",
-				"AddUuid, split3@ExisitingNullActorID join(split3@NewActorID@ActorName == split3@ExisitingNullActorID@ActorName,",
+				"select9 split(!isNull(ActorID),",
+				"     disjoint: false) ~> split3@(ExisitingActorID, NewActorID)",
+				"AddUuid, split3@ExisitingActorID join(split3@NewActorID@ActorName == split3@ExisitingActorID@ActorName,",
 				"     joinType:'outer',",
 				"     broadcast: 'auto')~> join3",
+				"select8 aggregate(groupBy(ActorName,",
+				"          ActorID),",
+				"     count = count()) ~> aggregate5",
+				"aggregate5 select(mapColumn(",
+				"          ActorName,",
+				"          ActorID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select9",
 				"union3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
