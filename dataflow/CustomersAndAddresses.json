@@ -94,6 +94,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     Date as string",
+				"}",
 				"source(output(",
 				"          CustomerID as string,",
 				"          LastName as string,",
