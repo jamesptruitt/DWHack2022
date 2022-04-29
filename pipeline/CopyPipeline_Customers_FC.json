@@ -167,12 +167,6 @@
 				]
 			}
 		],
-		"parameters": {
-			"Date": {
-				"type": "string",
-				"defaultValue": "2018-01-01"
-			}
-		},
 		"annotations": [],
 		"lastPublishTime": "2022-04-25T20:57:46Z"
 	},
