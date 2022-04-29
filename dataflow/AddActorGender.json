@@ -1,0 +1,40 @@
+{
+	"name": "AddActorGender",
+	"properties": {
+		"type": "Flowlet",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "split1"
+				},
+				{
+					"name": "addUuid"
+				},
+				{
+					"name": "union1"
+				},
+				{
+					"name": "inputVAActors"
+				},
+				{
+					"name": "output1"
+				}
+			],
+			"scriptLines": [
+				"input(output(",
+				"          ActorID as string,",
+				"          ActorName as string,",
+				"          Gender as string",
+				"     ),",
+				"     order: 0) ~> inputVAActors",
+				"inputVAActors split(!isNull(Gender),",
+				"     disjoint: false) ~> split1@(GenderExists, GenderMissing)",
+				"split1@GenderMissing derive(Gender = \"U\") ~> addUuid",
+				"split1@GenderExists, addUuid union(byName: true)~> union1",
+				"union1 output() ~> output1"
+			]
+		}
+	}
+}
