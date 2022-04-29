@@ -17,13 +17,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Orders",
-						"type": "DataFlowReference",
-						"parameters": {
-							"Date": {
-								"value": "'@{pipeline().parameters.Date}'",
-								"type": "Expression"
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
@@ -47,13 +41,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "CustomersAndAddresses",
-						"type": "DataFlowReference",
-						"parameters": {
-							"Date": {
-								"value": "'@{pipeline().parameters.Date}'",
-								"type": "Expression"
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
@@ -77,13 +65,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Movies",
-						"type": "DataFlowReference",
-						"parameters": {
-							"Date": {
-								"value": "'@{pipeline().parameters.Date}'",
-								"type": "Expression"
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
@@ -107,13 +89,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Rentals",
-						"type": "DataFlowReference",
-						"parameters": {
-							"Date": {
-								"value": "'@{pipeline().parameters.Date}'",
-								"type": "Expression"
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
@@ -137,13 +113,7 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "Streaming",
-						"type": "DataFlowReference",
-						"parameters": {
-							"Date": {
-								"value": "'@{pipeline().parameters.Date}'",
-								"type": "Expression"
-							}
-						}
+						"type": "DataFlowReference"
 					},
 					"compute": {
 						"coreCount": 8,
