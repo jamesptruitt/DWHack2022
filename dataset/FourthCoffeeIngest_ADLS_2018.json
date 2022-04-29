@@ -5,12 +5,20 @@
 			"referenceName": "AzureDataLakeStorage1",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"Date": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Json",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"folderPath": "Transactions_2018",
+				"folderPath": {
+					"value": "@dataset().Date",
+					"type": "Expression"
+				},
 				"fileSystem": "fourthcoffee-ingest"
 			}
 		},
