@@ -1,0 +1,151 @@
+{
+	"name": "Actors2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SouthridgeMovies",
+						"type": "DatasetReference"
+					},
+					"name": "sourceSR"
+				},
+				{
+					"dataset": {
+						"referenceName": "VanArsdellActors",
+						"type": "DatasetReference"
+					},
+					"name": "sourceVAActors"
+				},
+				{
+					"dataset": {
+						"referenceName": "VanArsdellMovies",
+						"type": "DatasetReference"
+					},
+					"name": "sourceAVMovies"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "flattenActors"
+				},
+				{
+					"name": "selectSRActors"
+				},
+				{
+					"name": "removeDuplicateActors"
+				},
+				{
+					"name": "selectNames"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "selectRemoveDuplicateName"
+				},
+				{
+					"name": "AddUUID",
+					"flowlet": {
+						"referenceName": "AddActorUUID",
+						"type": "DataFlowReference"
+					}
+				},
+				{
+					"name": "AddGender",
+					"flowlet": {
+						"referenceName": "AddActorGender",
+						"type": "DataFlowReference"
+					}
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          actors as (name as string)[],",
+				"          availabilityDate as string,",
+				"          genre as string,",
+				"          rating as string,",
+				"          releaseYear as integer,",
+				"          runtime as integer,",
+				"          streamingAvailabilityDate as string,",
+				"          tier as integer,",
+				"          title as string,",
+				"          id as string,",
+				"          {_rid} as string,",
+				"          {_self} as string,",
+				"          {_etag} as string,",
+				"          {_attachments} as string,",
+				"          {_ts} as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceSR",
+				"source(output(",
+				"          ActorID as string,",
+				"          ActorName as string,",
+				"          Gender as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceVAActors",
+				"source(output(",
+				"          MovieID as string,",
+				"          MovieTitle as string,",
+				"          Category as string,",
+				"          Rating as string,",
+				"          RunTimeMin as integer,",
+				"          ReleaseDate as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceAVMovies",
+				"sourceSR foldDown(unroll(actors),",
+				"     mapColumn(",
+				"          ActorName = actors.name,",
+				"          MovieID = id",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattenActors",
+				"flattenActors select(mapColumn(",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectSRActors",
+				"selectSRActors aggregate(groupBy(ActorName),",
+				"     count = count()) ~> removeDuplicateActors",
+				"removeDuplicateActors select(mapColumn(",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectNames",
+				"sourceVAActors, selectNames join(sourceVAActors@ActorName == selectNames@ActorName,",
+				"     joinType:'outer',",
+				"     broadcast: 'auto')~> join1",
+				"join1 select(mapColumn(",
+				"          ActorID,",
+				"          ActorName = sourceVAActors@ActorName,",
+				"          Gender",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectRemoveDuplicateName",
+				"selectRemoveDuplicateName compose(mapColumn(",
+				"          ActorID,",
+				"          ActorName,",
+				"          Gender",
+				"     ),",
+				"     composition: 'AddActorUUID') ~> AddUUID@(output1)",
+				"AddUUID@output1 compose(mapColumn(",
+				"          ActorID,",
+				"          ActorName,",
+				"          Gender",
+				"     ),",
+				"     composition: 'AddActorGender') ~> AddGender@(output1)"
+			]
+		}
+	}
+}
