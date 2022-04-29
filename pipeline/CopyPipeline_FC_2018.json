@@ -47,7 +47,13 @@
 				"outputs": [
 					{
 						"referenceName": "FourthCoffeeIngest_ADLS_2018",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"Date": {
+								"value": "@pipeline().parameters.Date",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
