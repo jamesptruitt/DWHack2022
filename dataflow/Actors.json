@@ -112,13 +112,13 @@
 					"name": "split3"
 				},
 				{
-					"name": "join3"
-				},
-				{
 					"name": "aggregate5"
 				},
 				{
 					"name": "select9"
+				},
+				{
+					"name": "union4"
 				}
 			],
 			"scriptLines": [
@@ -229,7 +229,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select5",
-				"join3, select4 join(split3@NewActorID@ActorName == select4@ActorName,",
+				"union4, select4 join(union4@ActorName == select4@ActorName,",
 				"     joinType:'outer',",
 				"     broadcast: 'auto')~> join1",
 				"select5 aggregate(groupBy(ActorName,",
@@ -260,9 +260,6 @@
 				"     skipDuplicateMapOutputs: true) ~> select8",
 				"select9 split(!isNull(ActorID),",
 				"     disjoint: false) ~> split3@(ExisitingActorID, NewActorID)",
-				"AddUuid, split3@ExisitingActorID join(split3@NewActorID@ActorName == split3@ExisitingActorID@ActorName,",
-				"     joinType:'outer',",
-				"     broadcast: 'auto')~> join3",
 				"select8 aggregate(groupBy(ActorName,",
 				"          ActorID),",
 				"     count = count()) ~> aggregate5",
@@ -272,6 +269,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select9",
+				"AddUuid, split3@ExisitingActorID union(byName: true)~> union4",
 				"union3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
