@@ -1,5 +1,5 @@
 {
-	"name": "Movies_Tables",
+	"name": "Movies_CategoryRatings_Tables",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -26,28 +26,40 @@
 						"type": "DatasetReference"
 					},
 					"name": "sinkDimRatings"
-				},
-				{
-					"dataset": {
-						"referenceName": "AzureSynapseAnalyticsTableDimMovies",
-						"type": "DatasetReference"
-					},
-					"name": "sinkDimMovies"
 				}
 			],
 			"transformations": [
 				{
-					"name": "aggregate1"
+					"name": "aggregateRatings"
+				},
+				{
+					"name": "aggregateCategories"
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          Actor as string,",
+				"          AvailabilityDate as date,",
+				"          AvailabilityYear as short,",
+				"          Genre as string,",
+				"          MovieGenre as string,",
+				"          MovieID as string,",
+				"          MovieRating as string,",
+				"          MovieTier as short,",
+				"          MovieTitle as string,",
+				"          Rating as string,",
+				"          SourceID as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false,",
 				"     documentForm: 'documentPerLine') ~> sourceMovies",
-				"sourceMovies aggregate() ~> aggregate1",
-				"sourceMovies sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
+				"sourceMovies aggregate(groupBy(MovieRating),",
+				"     count = count()) ~> aggregateRatings",
+				"sourceMovies aggregate(groupBy(MovieGenre),",
+				"     count = count()) ~> aggregateCategories",
+				"aggregateCategories sink(allowSchemaDrift: false,",
+				"     validateSchema: true,",
 				"     input(",
 				"          MovieCategorySK as integer,",
 				"          MovieCategoryDescription as string",
@@ -61,9 +73,12 @@
 				"     allowCopyCommand: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sinkDimCategories",
-				"aggregate1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          MovieCategoryDescription = MovieGenre",
+				"     )) ~> sinkDimCategories",
+				"aggregateRatings sink(allowSchemaDrift: false,",
+				"     validateSchema: true,",
 				"     input(",
 				"          MovieRatingSK as integer,",
 				"          MovieRatingDescription as string",
@@ -77,27 +92,10 @@
 				"     allowCopyCommand: true,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sinkDimRatings",
-				"sourceMovies sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     input(",
-				"          MovieSK as integer,",
-				"          MovieID as string,",
-				"          MovieTitle as string,",
-				"          MovieCategorySK as integer,",
-				"          MovieRatingSK as integer,",
-				"          MovieRunTimeMin as integer",
-				"     ),",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
-				"     staged: true,",
-				"     allowCopyCommand: true,",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> sinkDimMovies"
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          MovieRatingDescription = MovieRating",
+				"     )) ~> sinkDimRatings"
 			]
 		}
 	}
