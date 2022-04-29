@@ -330,8 +330,7 @@
 				]
 			},
 			"Date": {
-				"type": "string",
-				"defaultValue": "2018-01-01"
+				"type": "string"
 			}
 		},
 		"annotations": [],
