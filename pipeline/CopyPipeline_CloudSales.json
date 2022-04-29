@@ -74,7 +74,11 @@
 									"referenceName": "cloudsales_ingest",
 									"type": "DatasetReference",
 									"parameters": {
-										"cw_fileName": "@item().destination.fileName"
+										"cw_fileName": "@item().destination.fileName",
+										"Date": {
+											"value": "@pipeline().parameters.Date",
+											"type": "Expression"
+										}
 									}
 								}
 							]
@@ -421,12 +425,6 @@
 			},
 			"Date": {
 				"type": "string",
-				"defaultValue": "2018-01-01"
-			}
-		},
-		"variables": {
-			"Date": {
-				"type": "String",
 				"defaultValue": "2018-01-01"
 			}
 		},
