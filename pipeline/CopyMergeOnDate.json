@@ -125,7 +125,13 @@
 						"referenceName": "merge data",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"Date": {
+							"value": "@pipeline().parameters.date",
+							"type": "Expression"
+						}
+					}
 				}
 			}
 		],
