@@ -37,6 +37,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "SqlServerSource",
+									"sqlReaderQuery": "SELECT *\nFROM @{item().source.table}\nWHERE CreatedDate = '@{pipeline().parameters.Date}'\nOR UpdatedDate = '@{pipeline().parameters.Date}'",
 									"partitionOption": "None"
 								},
 								"sink": {
