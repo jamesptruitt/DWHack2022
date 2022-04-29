@@ -20,7 +20,7 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"Date": {
-								"value": "@pipeline().parameters.Date",
+								"value": "'@{pipeline().parameters.Date}'",
 								"type": "Expression"
 							}
 						}
@@ -50,7 +50,7 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"Date": {
-								"value": "@pipeline().parameters.Date",
+								"value": "'@{pipeline().parameters.Date}'",
 								"type": "Expression"
 							}
 						}
@@ -80,7 +80,7 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"Date": {
-								"value": "@pipeline().parameters.Date",
+								"value": "'@{pipeline().parameters.Date}'",
 								"type": "Expression"
 							}
 						}
@@ -110,7 +110,7 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"Date": {
-								"value": "@pipeline().parameters.Date",
+								"value": "'@{pipeline().parameters.Date}'",
 								"type": "Expression"
 							}
 						}
@@ -140,7 +140,7 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"Date": {
-								"value": "@pipeline().parameters.Date",
+								"value": "'@{pipeline().parameters.Date}'",
 								"type": "Expression"
 							}
 						}
