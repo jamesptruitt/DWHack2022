@@ -2,7 +2,7 @@
 	"name": "SourceDataset_ne1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SqlServer1",
+			"referenceName": "VanArsdelLtdSqlServer",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
