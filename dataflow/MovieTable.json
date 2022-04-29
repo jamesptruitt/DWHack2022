@@ -1,0 +1,122 @@
+{
+	"name": "MovieTable",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Movies",
+						"type": "DatasetReference"
+					},
+					"name": "sourceMovies"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticsTableDimRatings",
+						"type": "DatasetReference"
+					},
+					"name": "sourceRatings"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticsCategories",
+						"type": "DatasetReference"
+					},
+					"name": "sourceCategories"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSynapseAnalyticsMovies",
+						"type": "DatasetReference"
+					},
+					"name": "sinkMoviesTable"
+				}
+			],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "join2"
+				},
+				{
+					"name": "derivedColumn1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Actor as string,",
+				"          AvailabilityDate as date,",
+				"          AvailabilityYear as short,",
+				"          Genre as string,",
+				"          MovieGenre as string,",
+				"          MovieID as string,",
+				"          MovieRating as string,",
+				"          MovieTier as short,",
+				"          MovieTitle as string,",
+				"          Rating as string,",
+				"          SourceID as boolean",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> sourceMovies",
+				"source(output(",
+				"          MovieRatingSK as integer,",
+				"          MovieRatingDescription as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table',",
+				"     staged: true) ~> sourceRatings",
+				"source(output(",
+				"          MovieCategorySK as integer,",
+				"          MovieCategoryDescription as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table',",
+				"     staged: true) ~> sourceCategories",
+				"sourceMovies, sourceRatings join(Rating == MovieRatingDescription,",
+				"     joinType:'left',",
+				"     broadcast: 'auto')~> join1",
+				"join1, sourceCategories join(Genre == MovieCategoryDescription,",
+				"     joinType:'left',",
+				"     broadcast: 'auto')~> join2",
+				"join2 derive(runtime = 90) ~> derivedColumn1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          MovieSK as integer,",
+				"          MovieID as string,",
+				"          MovieTitle as string,",
+				"          MovieCategorySK as integer,",
+				"          MovieRatingSK as integer,",
+				"          MovieRunTimeMin as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     staged: true,",
+				"     allowCopyCommand: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          MovieID,",
+				"          MovieTitle,",
+				"          MovieCategorySK,",
+				"          MovieRatingSK,",
+				"          MovieRunTimeMin = runtime",
+				"     )) ~> sinkMoviesTable"
+			]
+		}
+	}
+}
