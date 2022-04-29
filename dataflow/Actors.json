@@ -98,6 +98,18 @@
 				},
 				{
 					"name": "select6"
+				},
+				{
+					"name": "select7"
+				},
+				{
+					"name": "join2"
+				},
+				{
+					"name": "select8"
+				},
+				{
+					"name": "split3"
 				}
 			],
 			"scriptLines": [
@@ -150,7 +162,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> flattenActors",
-				"aggregate4 derive(ActorID = uuid()) ~> AddUuid",
+				"split3@NewActorID derive(ActorID = uuid()) ~> AddUuid",
 				"select1, select2 union(byName: true)~> union1",
 				"joinVA aggregate(groupBy(sourceVanArsdell@ActorID,",
 				"          Gender,",
@@ -208,7 +220,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select5",
-				"AddUuid, select4 join(aggregate4@ActorName == select4@ActorName,",
+				"AddUuid, select4 join(split3@NewActorID@ActorName == select4@ActorName,",
 				"     joinType:'outer',",
 				"     broadcast: 'auto')~> join1",
 				"select5 aggregate(groupBy(ActorName,",
@@ -222,6 +234,23 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select6",
+				"aggregate1 select(mapColumn(",
+				"          ActorID,",
+				"          ActorName",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select7",
+				"aggregate4, select7 join(ERROR_FUNCTION('') == ERROR_FUNCTION(''),",
+				"     joinType:'inner',",
+				"     broadcast: 'auto')~> join2",
+				"join2 select(mapColumn(",
+				"          ActorName = aggregate4@ActorName,",
+				"          ActorID = aggregate4@ActorID",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select8",
+				"select8 split(!isNull(ActorID),",
+				"     disjoint: false) ~> split3@(ExisitingNullActorID, NewActorID)",
 				"union3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
