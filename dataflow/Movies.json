@@ -46,6 +46,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     Date as string ($Date)",
+				"}",
 				"source(output(",
 				"          actors as (name as string)[],",
 				"          availabilityDate as string,",
