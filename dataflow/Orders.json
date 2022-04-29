@@ -43,6 +43,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     Date as string (\"2018-01-01\")",
+				"}",
 				"source(output(",
 				"          OrderID as string,",
 				"          CustomerID as string,",
