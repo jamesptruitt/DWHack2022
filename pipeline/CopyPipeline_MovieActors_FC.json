@@ -83,7 +83,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "SourceDataset_dmy",
+						"referenceName": "SourceDataset_bpg",
 						"type": "DatasetReference"
 					}
 				],
