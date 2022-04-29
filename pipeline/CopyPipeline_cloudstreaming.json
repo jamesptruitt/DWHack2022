@@ -89,7 +89,7 @@
 		],
 		"parameters": {
 			"cw_items": {
-				"type": "string",
+				"type": "array",
 				"defaultValue": [
 					{
 						"source": {
